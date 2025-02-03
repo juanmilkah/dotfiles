@@ -11,7 +11,8 @@ export ZSH="$HOME/.oh-my-zsh"
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 # ZSH_THEME="robbyrussell"
-ZSH_THEME="fino"
+# ZSH_THEME="fino"
+ZSH_THEME="avit"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -121,7 +122,8 @@ alias push='git push origin'
 alias commit="git commit ."
 alias ga="git add ."
 alias gs="git status"
-alias cg="cargo"
+alias dff='git diff'
+alias ca="cargo"
 alias t="todo"
 
 # bun completions
