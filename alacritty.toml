@@ -1,0 +1,19 @@
+[general]
+import = [
+    "~/.config/alacritty/themes/themes/terminal_app.toml"
+]
+
+[window]
+startup_mode ="Fullscreen" 
+decorations_theme_variant = "Dark"
+
+[font]
+normal = {family = "FantasqueSansM Nerd Font", style="Regular"}
+size = 16.00
+
+[colors.primary]
+foreground = "#00FF00"
+background = "#000000"
+
+[mouse]
+hide_when_typing = true
