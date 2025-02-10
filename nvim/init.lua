@@ -19,7 +19,7 @@ vim.g.mapleader = ' '
 require("lazy").setup({
   -- Treesitter for better syntax highlighting
   {
-    'nvim-treesitter/nvim-treesitter', 
+    'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     config = function()
       require('nvim-treesitter.configs').setup {
@@ -31,7 +31,20 @@ require("lazy").setup({
   },
 
   { "nvim-neotest/nvim-nio" },
-  
+
+    {
+    'nvim-lualine/lualine.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    config = function()
+      require('lualine').setup {
+        options = {
+          theme = 'auto',
+          component_separators = '|',
+          section_separators = { left = '', right = '' },
+        }
+      }
+    end
+  },
   -- Undo tree
   {
     'mbbill/undotree',
@@ -40,26 +53,225 @@ require("lazy").setup({
     end
   },
 
-  {
-  'rafamadriz/friendly-snippets',
-  dependencies = { 'L3MON4D3/LuaSnip' },
+{
+    "lukas-reineke/indent-blankline.nvim",
+    main = "ibl",
+    opts = {
+        -- Use dots for indentation
+        indent = {
+            char = "⋅", -- You can use "⋅" (middle dot) or "." (regular dot)
+        },
+        -- Remove the underline
+        scope = {
+            show_start = false,
+            show_end = false,
+            highlight = "CursorColumn", -- Disable highlighting
+        },
+        -- Disable the underline globally
+        whitespace = {
+            highlight = "CursorColumn", -- Disable whitespace highlighting
+        },
+    },
 },
 
+  -- Autocompletion
   {
-  'mfussenegger/nvim-dap',
-  dependencies = { 'rcarriga/nvim-dap-ui' },
+    'hrsh7th/nvim-cmp',
+    dependencies = {
+      'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-buffer',
+      'hrsh7th/cmp-path',
+      'L3MON4D3/LuaSnip',
+      'saadparwaiz1/cmp_luasnip',
+    },
+    config = function()
+      local cmp = require('cmp')
+      local luasnip = require('luasnip')
+
+      cmp.setup({
+        snippet = {
+          expand = function(args)
+            luasnip.lsp_expand(args.body)
+          end,
+        },
+        mapping = cmp.mapping.preset.insert({
+          ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+          ['<C-f>'] = cmp.mapping.scroll_docs(4),
+          ['<C-Space>'] = cmp.mapping.complete(),
+          ['<C-e>'] = cmp.mapping.abort(),
+          ['<CR>'] = cmp.mapping.confirm({ select = true }),
+        }),
+        sources = cmp.config.sources({
+          { name = 'nvim_lsp' },
+          { name = 'luasnip' },
+        }, {
+          { name = 'buffer' },
+        })
+      })
+    end
+  },
+
+  -- Git integration
+  {
+    'lewis6991/gitsigns.nvim',
+    config = function()
+      require('gitsigns').setup({
+        signs = {
+          add          = { text = '+' },
+          change       = { text = '│' },
+          delete       = { text = '_' },
+          topdelete    = { text = '‾' },
+          changedelete = { text = '~' },
+          untracked    = { text = '┆' },
+        },
+      })
+    end
+  },
+
+  {
+    'tpope/vim-fugitive',
+    config = function()
+      vim.keymap.set('n', '<leader>gs', ':Git<CR>', { noremap = true, silent = true }) -- Git status
+      vim.keymap.set('n', '<leader>gc', ':Git commit<CR>', { noremap = true, silent = true }) -- Git commit
+      vim.keymap.set('n', '<leader>gp', ':Git push<CR>', { noremap = true, silent = true }) -- Git push
+    end
+  },
+
+  -- Fuzzy Finder
+  {
+    'nvim-telescope/telescope.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      require('telescope').setup{
+        defaults = {
+          file_ignore_patterns = { "^.git/", "node_modules" }
+        }
+      }
+    end
+  },
+
+  {
+    'olimorris/persisted.nvim',
+    config = function()
+      require('persisted').setup({
+        save_dir = vim.fn.stdpath('data') .. '/sessions/', -- Directory to save sessions
+        silent = true, -- No notifications
+        autoload = true, -- Automatically load the last session
+        on_autoload_no_session = function()
+          vim.notify('No session to load.')
+        end,
+      })
+    end
+  },
+
+  -- File Explorer
+  {
+    'nvim-tree/nvim-tree.lua',
+    event="VeryLazy",
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    config = function()
+      require("nvim-tree").setup({
+        view = { width = 30 },
+        renderer = { group_empty = true },
+        filters = { dotfiles = false }
+      })
+    end
+  },
+
+  -- Theme
+  {
+    'Shatur/neovim-ayu',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require('ayu').setup({
+        mirage = false,
+        overrides = {
+          LineNr = { fg = "#964B00" },  -- brown
+        }
+      })
+      vim.cmd('colorscheme ayu-dark')
+    end
+  },
+
+  -- Utilities
+  {
+    'windwp/nvim-autopairs',
+    event = "InsertEnter",
+    config = true
+  },
+
+  {
+    'numToStr/Comment.nvim',
+    config = true
+  },
+
+  -- Formatter
+  {
+    'jose-elias-alvarez/null-ls.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      local null_ls = require('null-ls')
+      null_ls.setup({
+        sources = {
+          null_ls.builtins.formatting.prettier, -- JavaScript/TypeScript
+          null_ls.builtins.formatting.gofmt, -- Go
+          null_ls.builtins.formatting.rustfmt, -- Rust
+          null_ls.builtins.formatting.clang_format, -- C/C++
+          null_ls.builtins.formatting.stylua, -- Lua
+        },
+      })
+    end
+  },
+
+  {
+    'glepnir/lspsaga.nvim',
+    config = function()
+      require('lspsaga').setup({
+        symbol_in_winbar = { enable = false },
+        lightbulb = { enable = false },
+      })
+    end
+  },
+
+  -- Markdown Preview
+{
+  "iamcco/markdown-preview.nvim",
+  cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+  build = "cd app && npm install",
+  init = function()
+    vim.g.mkdp_filetypes = { "markdown" }
+  end,
+  ft = { "markdown" },
+},
+
+  -- Wakatime
+  {'wakatime/vim-wakatime'},
+  
+  {
+  'simrat39/rust-tools.nvim',
   config = function()
-    require('dap-python').setup('~/.virtualenvs/debugpy/bin/python')
-    require('dapui').setup()
+    require('rust-tools').setup({
+      server = {
+        on_attach = on_attach,
+        settings = {
+          ['rust-analyzer'] = {
+            checkOnSave = {
+              command = "clippy",
+            },
+            imports = {
+              granularity = {
+                group = "module",
+              },
+              prefix = "self",
+            },
+          }
+        }
+      }
+    })
   end
 },
-{
-  'mfussenegger/nvim-dap-python',
-  dependencies = { 'mfussenegger/nvim-dap' },
-},
 
-
-  
   -- LSP Configuration
   {
     'neovim/nvim-lspconfig',
@@ -84,37 +296,36 @@ require("lazy").setup({
 
       -- Setup Mason
       require('mason').setup()
-    	require('mason-lspconfig').setup({
-      ensure_installed = { 'clangd', 'rust_analyzer', 'gopls', 'ts_ls', 'pyright' }
+      require('mason-lspconfig').setup({
+        ensure_installed = { 'clangd', 'rust_analyzer', 'gopls', 'ts_ls', 'lua_ls' }
       })
- 
-      
+
       -- Get LSP capabilities
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
       local lspconfig = require('lspconfig')
+
       -- Function to safely setup LSP servers
       local function safe_setup(server_name, config)
-      local success, err = pcall(function()
-        lspconfig[server_name].setup(config)
-      end)
-      if not success then
-        -- Suppress error messages for missing language servers
-        vim.notify("LSP server " .. server_name .. " not found: " .. err, vim.log.levels.WARN, { title = "LSP Setup" })
-      end 
+        local success, err = pcall(function()
+          lspconfig[server_name].setup(config)
+        end)
+        if not success then
+          -- Suppress error messages for missing language servers
+          vim.notify("LSP server " .. server_name .. " not found: " .. err, vim.log.levels.WARN, { title = "LSP Setup" })
+        end
       end
-      
-        -- clangd 
-          lspconfig.clangd.setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-      cmd = { "clangd", "--background-index", "--clang-tidy" },
-      init_options = {
-        clangdFileStatus = true,
-      },
-      filetypes = { "c", "cpp", "objc", "objcpp" },
-    })
 
-        
+      -- clangd
+      lspconfig.clangd.setup({
+        capabilities = capabilities,
+        on_attach = on_attach,
+        cmd = { "clangd", "--background-index", "--clang-tidy" },
+        init_options = {
+          clangdFileStatus = true,
+        },
+        filetypes = { "c", "cpp", "objc", "objcpp" },
+      })
+
       -- TypeScript LSP setup
       lspconfig.ts_ls.setup({
         on_attach = on_attach,
@@ -123,22 +334,6 @@ require("lazy").setup({
         single_file_support = false,
         filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact" },
       })
-
-      -- python 
-      lspconfig.pyright.setup({
-  on_attach = on_attach,
-  capabilities = capabilities,
-  settings = {
-    python = {
-      analysis = {
-        autoSearchPaths = true,
-        useLibraryCodeForTypes = true,
-        diagnosticMode = "workspace",
-      },
-    },
-  },
-})
-
 
       -- Rust LSP setup
       lspconfig.rust_analyzer.setup({
@@ -157,7 +352,7 @@ require("lazy").setup({
             },
           }
         }
-     })
+      })
 
       -- Go LSP setup
       lspconfig.gopls.setup({
@@ -173,173 +368,9 @@ require("lazy").setup({
           },
         },
       })
-  
-  end
-  },
-
-  
-  -- Autocompletion
-  {
-    'hrsh7th/nvim-cmp',
-    dependencies = {
-      'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-buffer',
-      'hrsh7th/cmp-path',
-      'L3MON4D3/LuaSnip',
-      'saadparwaiz1/cmp_luasnip',
-    },
-    config = function()
-      local cmp = require('cmp')
-      local luasnip = require('luasnip')
-      
-      cmp.setup({
-        snippet = {
-          expand = function(args)
-            luasnip.lsp_expand(args.body)
-          end,
-        },
-        mapping = cmp.mapping.preset.insert({
-          ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-          ['<C-f>'] = cmp.mapping.scroll_docs(4),
-          ['<C-Space>'] = cmp.mapping.complete(),
-          ['<C-e>'] = cmp.mapping.abort(),
-          ['<CR>'] = cmp.mapping.confirm({ select = true }),
-        }),
-        sources = cmp.config.sources({
-          { name = 'nvim_lsp' },
-          { name = 'luasnip' },
-        }, {
-          { name = 'buffer' },
-        })
-      })
     end
   },
-  
-  -- Git integration
-  {
-      'lewis6991/gitsigns.nvim',
-      config = function()
-        require('gitsigns').setup({
-          signs = {
-            add          = { text = '+' },
-            change       = { text = '│' },
-            delete       = { text = '_' },
-            topdelete    = { text = '‾' },
-            changedelete = { text = '~' },
-            untracked    = { text = '┆' },
-          },
-        })
-      end
-  },
-  
-  -- Fuzzy Finder
-  {
-    'nvim-telescope/telescope.nvim', 
-    dependencies = { 'nvim-lua/plenary.nvim' },
-    config = function()
-      require('telescope').setup{
-        defaults = {
-          file_ignore_patterns = { "^.git/", "node_modules" }
-        }
-      }
-    end
-  },
-  
-  -- File Explorer
-  {
-    'nvim-tree/nvim-tree.lua',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
-    config = function()
-      require("nvim-tree").setup({
-        view = { width = 30 },
-        renderer = { group_empty = true },
-        filters = { dotfiles = false }
-      })
-    end
-  },
-  
-  -- Status Line
-  {
-    'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
-    config = function()
-      require('lualine').setup {
-        options = {
-          theme = 'auto',
-          component_separators = '|',
-          section_separators = { left = '', right = '' },
-        }
-      }
-    end
-  },
-  
- -- Theme
-  {
-    'Shatur/neovim-ayu',
-     lazy = false,
-    priority = 1000,
-   config = function()
-   require('ayu').setup({
-    mirage = false,
-     overrides = {
-           LineNr = { fg = "#964B00" },  -- brown
-        }
-     })
-     vim.cmd('colorscheme ayu-dark')
-    end
-   },
-  -- -- 
-  --
-  --
-  -- Utilities
-  {
-    'windwp/nvim-autopairs',
-    event = "InsertEnter",
-    config = true
-  },
-  
-  {
-    'numToStr/Comment.nvim',
-    config = true
-  },
-  
-  {
-    'lukas-reineke/indent-blankline.nvim',
-    main = 'ibl',
-    config = true
-  },
-  
-  -- Formatter
-  {
-    'sbdchd/neoformat',
-    config = function()
-      vim.g.neoformat_enabled_go = {'gofumpt', 'goimports'}
-      vim.g.neoformat_enabled_rust = {'rustfmt'}
-      vim.g.neoformat_enabled_typescript = {'prettier', 'eslint_d'}
-      vim.g.neoformat_enabled_javascript = {'prettier', 'eslint_d'}
-      vim.g.neoformat_enabled_python = {'black'}
-      vim.g.neoformat_enabled_c = {'clangd'}
-    end
-  },
-  
-  -- markdown preview 
-  {
-    "toppair/peek.nvim",
-    event = { "VeryLazy" },
-    build = "deno task --quiet build:fast",
-    config = function()
-        require("peek").setup()
-        vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
-        vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
-    end,
-},
-
-    --
-   -- Wakatime
-  'wakatime/vim-wakatime',
-
 })
-
 
 -- General settings
 vim.opt.number = true
@@ -351,12 +382,13 @@ vim.opt.shiftwidth = 2
 vim.opt.smartindent = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
+vim.opt.incsearch = true
 vim.opt.hlsearch = false
 vim.opt.updatetime = 1
 vim.opt.signcolumn = 'yes'
 vim.opt.background = 'dark'
 vim.opt.termguicolors = true
---
+
 -- Keymappings
 local opts = { noremap = true, silent = true }
 
@@ -376,13 +408,10 @@ vim.keymap.set('n', '<leader>bd', ':bdelete<CR>', opts)
 -- Quick commands
 vim.keymap.set('n', '<leader>w', ':w<CR>', opts)
 vim.keymap.set('n', '<leader>q', ':q<CR>', opts)
-vim.keymap.set('n', '<leader>x', ':wq<CR>', opts)
--- map leader+y to copy to system clipboard in normal and visual mode
 vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', opts)
 
--- markdown preview 
-vim.keymap.set('n', '<leader>po', ':PeekOpen', opts)
-vim.keymap.set('n', '<leader>pc', ':PeekClose', opts)
+-- Markdown preview
+vim.keymap.set('n', '<leader>mm', ':MarkdownPreviewToggle<CR>', opts)
 
 -- Insert mode shortcuts
 vim.keymap.set('i', 'jj', '<Esc>', opts)
@@ -398,7 +427,13 @@ vim.keymap.set('n', 'O', 'O<Esc>', opts)
 -- Undo tree keymapping
 vim.keymap.set('n', '<leader>u', ':UndotreeToggle<CR>', opts)
 
+vim.keymap.set('n', '<leader>ss', ':PersistedSave<CR>', opts) -- Save session
+vim.keymap.set('n', '<leader>sl', ':PersistedLoad<CR>', opts) -- Load session
 
+-- Key mappings for LSP
+vim.api.nvim_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+vim.api.nvim_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+vim.api.nvim_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
 
 local function create_new_file()
   local new_file = vim.fn.input("New file: ")
@@ -413,15 +448,14 @@ for type, icon in pairs(signs) do
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 end
 
-
 vim.keymap.set("n", "<leader>nf", create_new_file, { desc = "Create new file" })
 
 -- Diagnostic configuration
 vim.diagnostic.config({
   virtual_text = { prefix = '● ' },
-  float = { 
-    source = 'always', 
-    border = 'rounded' 
+  float = {
+    source = 'always',
+    border = 'rounded'
   },
   signs = true,
   underline = true,
@@ -433,109 +467,31 @@ vim.api.nvim_create_autocmd('BufWritePre', {
   pattern = {'*.c', '*.rs', '*.go', '*.ts', '*.tsx', '*.js' ,'*.py', '*.html'},
   callback = function()
     vim.lsp.buf.format({ async = false })
-    vim.cmd('Neoformat')
   end
 })
 
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "python",
-  callback = function()
-    vim.opt.expandtab = true
-    vim.opt.tabstop = 4
-    vim.opt.shiftwidth = 4
-    vim.opt.softtabstop = 4
+function OpenTerminalBottomThird()
+  -- Check if a terminal buffer already exists
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_get_option(buf, 'buftype') == 'terminal' then
+      -- Switch to the existing terminal window
+      vim.cmd('botright split | resize ' .. math.floor(vim.o.lines * 0.33))
+      vim.cmd('buffer ' .. buf)
+      vim.cmd('startinsert')
+      return
+    end
   end
-})
---
- -- Function to create a floating terminal
- local function create_float_term()
-     -- Calculate dimensions
-     local width = math.floor(vim.o.columns * 0.4)
-     local height = math.floor(vim.o.lines * 0.4)
-     
-     -- Calculate starting position
-     local row = math.floor((vim.o.lines - height) / 2)
-     local col = math.floor((vim.o.columns - width) / 2)
-     
-     -- Create the floating window
-     local opts = {
-         relative = 'editor',
-         row = row,
-         col = col,
-         width = width,
-         height = height,
-         style = 'minimal',
-         border = 'rounded'
-     }
-     
-     -- Create buffer for terminal
-     local buf = vim.api.nvim_create_buf(false, true)
-     local win = vim.api.nvim_open_win(buf, true, opts)
-     
-     -- Spawn terminal
-     vim.fn.termopen(vim.o.shell, {
-         on_exit = function()
-             vim.api.nvim_win_close(win, true)
-         end
-     })
-     
-     -- Enter insert mode
-     vim.cmd('startinsert')
-     
-     -- Add mappings for this terminal buffer
-     local opts_term = { buffer = buf, noremap = true, silent = true }
-     vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], opts_term)
-     vim.keymap.set('t', '<C-h>', [[<C-\><C-n><C-W>h]], opts_term)
-     vim.keymap.set('t', '<C-j>', [[<C-\><C-n><C-W>j]], opts_term)
-     vim.keymap.set('t', '<C-k>', [[<C-\><C-n><C-W>k]], opts_term)
-     vim.keymap.set('t', '<C-l>', [[<C-\><C-n><C-W>l]], opts_term)
- end
 
- -- Add the keymapping for the terminal
- vim.keymap.set('n', '<leader>tt', create_float_term, { noremap = true, silent = true, desc = "Toggle floating terminal" })-- Function to create a floating terminal
- local function create_float_term()
-     -- Calculate dimensions
-     local width = math.floor(vim.o.columns * 0.8)
-     local height = math.floor(vim.o.lines * 0.4)
-     
-     -- Calculate starting position
-     local row = math.floor((vim.o.lines - height) / 2)
-     local col = math.floor((vim.o.columns - width) / 2)
-     
-     -- Create the floating window
-     local opts = {
-         relative = 'editor',
-         row = row,
-         col = col,
-         width = width,
-         height = height,
-         style = 'minimal',
-         border = 'rounded'
-     }
-     
-     -- Create buffer for terminal
-     local buf = vim.api.nvim_create_buf(false, true)
-     local win = vim.api.nvim_open_win(buf, true, opts)
-     
-     -- Spawn terminal
-     vim.fn.termopen(vim.o.shell, {
-         on_exit = function()
-             vim.api.nvim_win_close(win, true)
-         end
-     })
-     
-     -- Enter insert mode
-     vim.cmd('startinsert')
-     
-     -- Add mappings for this terminal buffer
-     local opts_term = { buffer = buf, noremap = true, silent = true }
-     vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], opts_term)
-     vim.keymap.set('t', '<C-h>', [[<C-\><C-n><C-W>h]], opts_term)
-     vim.keymap.set('t', '<C-j>', [[<C-\><C-n><C-W>j]], opts_term)
-     vim.keymap.set('t', '<C-k>', [[<C-\><C-n><C-W>k]], opts_term)
-     vim.keymap.set('t', '<C-l>', [[<C-\><C-n><C-W>l]], opts_term)
- end
+  -- If no terminal buffer exists, create a new one
+  local height = math.floor(vim.o.lines * 0.33)
+  vim.cmd('botright split | resize ' .. height)
+  vim.cmd('term')
 
- -- Add the keymapping for the terminal
- vim.keymap.set('n', '<leader>tt', create_float_term, { noremap = true, silent = true, desc = "Toggle floating terminal" })
+  -- Disable line numbers and enter insert mode
+  vim.api.nvim_win_set_option(0, 'number', false)
+  vim.api.nvim_win_set_option(0, 'relativenumber', false)
+  vim.cmd('startinsert')
+end
 
+-- Toggle terminal
+vim.api.nvim_set_keymap('n', '<leader>tt', ':lua OpenTerminalBottomThird()<CR>', { noremap = true, silent = true })
