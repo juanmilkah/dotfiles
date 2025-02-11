@@ -315,6 +315,12 @@ require("lazy").setup({
         end
       end
 
+      --zig
+      lspconfig.zls.setup({
+        capabilities = capabilities,
+        on_attach = on_attach,
+      })
+
       -- clangd
       lspconfig.clangd.setup({
         capabilities = capabilities,
