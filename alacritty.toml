@@ -9,10 +9,12 @@ decorations_theme_variant = "Dark"
 
 [font]
 normal = {family = "FantasqueSansM Nerd Font", style="Regular"}
-size = 16.00
+ # normal = {family = "UbuntuMono Nerd Font", style="Regular"}
+size = 17.00
 
 [colors.primary]
 foreground = "#00FF00"
+# foreground = "#FFFFFF"
 background = "#000000"
 
 [mouse]
