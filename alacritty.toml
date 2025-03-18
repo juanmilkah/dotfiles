@@ -8,14 +8,19 @@ startup_mode ="Fullscreen"
 decorations_theme_variant = "Dark"
 
 [font]
-normal = {family = "FantasqueSansM Nerd Font", style="Regular"}
- # normal = {family = "UbuntuMono Nerd Font", style="Regular"}
+normal = {family = "Firacode Nerd Font", style="Regular"}
+# normal = {family = "UbuntuMono Nerd Font", style="Regular"}
+bold = {family = "FiraCode Nerd Font", style = "Bold"}
+italic = {family = "FiraCode Nerd Font", style = "Regular"}
+bold_italic = {family = "FiraCode Nerd Font", style = "Bold"}
 size = 17.00
 
 [colors.primary]
-foreground = "#00FF00"
+# foreground = "#00FF00"
 # foreground = "#FFFFFF"
+foreground ="#ffde33" 
 background = "#000000"
 
 [mouse]
 hide_when_typing = true
+
