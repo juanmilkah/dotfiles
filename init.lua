@@ -12,8 +12,8 @@ vim.g.have_nerd_font = true
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
 
--- vim.opt.number = true
-vim.opt.relativenumber = true
+vim.opt.number = true
+-- vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = "a"
@@ -43,10 +43,10 @@ vim.opt.smartcase = true
 vim.opt.signcolumn = "yes"
 
 -- Decrease update time
-vim.opt.updatetime = 250
+vim.opt.updatetime = 100
 
 -- Decrease mapped sequence wait time
-vim.opt.timeoutlen = 300
+vim.opt.timeoutlen = 100
 
 -- Configure how new splits should be opened
 vim.opt.splitright = true
@@ -144,8 +144,8 @@ vim.keymap.set("i", "jk", "<Esc>", opts)
 vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>", opts)
 
 -- Quick commands
-vim.keymap.set("n", "<leader>w", ":w<CR>", opts)
-vim.keymap.set("n", "<leader>q", ":q<CR>", opts)
+-- vim.keymap.set("n", "<leader>w", ":w<CR>", opts)
+-- vim.keymap.set("n", "<leader>q", ":q<CR>", opts)
 vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', opts)
 
 -- [[ Install `lazy.nvim` plugin manager ]]
@@ -223,6 +223,41 @@ require("lazy").setup({
 	},
 
 	{ "wakatime/vim-wakatime", lazy = false },
+
+	{
+		"folke/persistence.nvim",
+		event = "BufReadPre", -- Load early to restore sessions
+		config = function()
+			require("persistence").setup({
+				dir = vim.fn.stdpath("data") .. "/sessions/", -- Save location
+				options = { "buffers", "curdir", "tabpages", "winsize" },
+			})
+		end,
+	},
+
+	-- Dashboard
+	{
+		"nvimdev/dashboard-nvim",
+		event = "VimEnter",
+		dependencies = { "nvim-tree/nvim-web-devicons" }, -- Optional for icons
+		config = function()
+			local db = require("dashboard")
+			db.setup({
+				theme = "doom", -- Other themes: hyper, default
+				config = {
+					header = { "Welcome to Neovim" }, -- Custom header
+					center = {
+						{ icon = " ", desc = " Restore Session", action = "lua require('persistence').load()" },
+						{ icon = "📁", desc = " Open File", action = "Telescope find_files" },
+						{ icon = "🔍", desc = " Find Text", action = "Telescope live_grep" },
+						{ icon = "⚙️ ", desc = " Config", action = "edit ~/.config/nvim/init.lua" },
+						{ icon = "🚪", desc = " Quit", action = "qa" },
+					},
+					footer = { "Neovim Rocks!" },
+				},
+			})
+		end,
+	},
 
 	-- NOTE: Plugins can also be configured to run Lua code when they are loaded.
 	--
@@ -349,15 +384,28 @@ require("lazy").setup({
 			-- [[ Configure Telescope ]]
 			-- See `:help telescope` and `:help telescope.setup()`
 			require("telescope").setup({
-				-- You can put your default mappings / updates / etc. in here
-				--  All the info you're looking for is in `:help telescope.setup()`
-				--
-				-- defaults = {
-				--   mappings = {
-				--     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-				--   },
-				-- },
-				-- pickers = {}
+				defaults = {
+					file_ignore_patterns = {
+						"node_modules/*",
+					},
+					pickers = {
+						find_files = {
+							find_command = { "rg", "--files", "--glob=!.git/" },
+						},
+					},
+					-- Add this configuration to respect .gitignore
+					vimgrep_arguments = {
+						"rg",
+						"--color=never",
+						"--no-heading",
+						"--with-filename",
+						"--line-number",
+						"--column",
+						"--smart-case",
+						--"--hidden",
+						-- "--glob=!.git/",
+					},
+				},
 				extensions = {
 					["ui-select"] = {
 						require("telescope.themes").get_dropdown(),
@@ -366,8 +414,9 @@ require("lazy").setup({
 			})
 
 			-- Enable Telescope extensions if they are installed
+			pcall(require("telescope").load_extension, "rg")
 			pcall(require("telescope").load_extension, "fzf")
-			pcall(require("telescope").load_extension, "ui-select")
+			-- pcall(require("telescope").load_extension, "ui-select")
 
 			-- See `:help telescope.builtin`
 			local builtin = require("telescope.builtin")
@@ -503,11 +552,11 @@ require("lazy").setup({
 
 					-- Fuzzy find all the symbols in your current workspace.
 					--  Similar to document symbols, except searches over your entire project.
-					map(
-						"<leader>ws",
-						require("telescope.builtin").lsp_dynamic_workspace_symbols,
-						"[W]orkspace [S]ymbols"
-					)
+					-- map(
+					-- 	"<leader>ws",
+					-- 	require("telescope.builtin").lsp_dynamic_workspace_symbols,
+					-- 	"[W]orkspace [S]ymbols"
+					-- )
 
 					-- Rename the variable under your cursor.
 					--  Most Language Servers support renaming across files, etc.
@@ -632,7 +681,7 @@ require("lazy").setup({
 			--  - settings (table): Override the default settings passed when initializing the server.
 			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 			local servers = {
-				clangd = {},
+				-- clangd = {},
 				gopls = {},
 				-- pyright = {},
 				rust_analyzer = {},
@@ -731,9 +780,9 @@ require("lazy").setup({
 			end,
 			formatters_by_ft = {
 				go = { "gopls" },
-				javascript = { "prettier", "prettierd", "stop_after_first" },
-				typescript = { "prettier" },
-				markdown = { "prettier" },
+				javascript = { "prettierd" },
+				typescript = { "prettierd" },
+				markdown = { "prettierd" },
 				lua = { "stylua" },
 				rust = { "rustfmt" },
 				-- Conform can also run multiple formatters sequentially
@@ -977,33 +1026,6 @@ require("lazy").setup({
 		--    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
 		--    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
 	},
-
-	-- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
-	-- init.lua. If you want these files, they are in the repository, so you can just download them and
-	-- place them in the correct locations.
-
-	-- NOTE: Next step on your Neovim journey: Add/Configure additional plugins for Kickstart
-	--
-	--  Here are some example plugins that I've included in the Kickstart repository.
-	--  Uncomment any of the lines below to enable them (you will need to restart nvim).
-	--
-	-- require 'kickstart.plugins.debug',
-	-- require("kickstart.plugins.indent_line"),
-	-- require 'kickstart.plugins.lint',
-	-- require("kickstart.plugins.autopairs"),
-	-- require 'kickstart.plugins.neo-tree',
-	-- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
-
-	-- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
-	--    This is the easiest way to modularize your config.
-	--
-	--  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-	-- { import = 'custom.plugins' },
-	--
-	-- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
-	-- Or use telescope!
-	-- In normal mode type `<space>sh` then write `lazy.nvim-plugin`
-	-- you can continue same window with `<space>sr` which resumes last telescope search
 }, {
 	ui = {
 		-- If you are using a Nerd Font: set icons to an empty table which will use the
@@ -1029,6 +1051,25 @@ require("lazy").setup({
 vim.cmd("colorscheme darcula")
 
 vim.keymap.set("n", "<leader>mm", ":MarkdownPreviewToggle<CR>", opts)
+
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>qs",
+	[[<cmd>lua require("persistence").load()<CR>]],
+	{ noremap = true, silent = true }
+)
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>ql",
+	[[<cmd>lua require("persistence").load({ last = true })<CR>]],
+	{ noremap = true, silent = true }
+)
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>qd",
+	[[<cmd>lua require("persistence").stop()<CR>]],
+	{ noremap = true, silent = true }
+)
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
