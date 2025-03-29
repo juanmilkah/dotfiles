@@ -15,7 +15,9 @@ alias ca='cargo'
 alias g='git'
 alias commit='git commit .'
 alias gs='git status'
+alias nvim-config='nvim ~/.config/nvim/init.lua'
 alias tree='eza --tree --color'
+alias ls='eza'
 
 # Add scripts directory to PATH
 fish_add_path ~/bash-scripts
@@ -36,5 +38,3 @@ fish_add_path "$GOPATH/bin"
 # Local bin directory
 fish_add_path "$HOME/.local/bin"
 
-# Deno environment
-#source "$HOME/.deno/env.fish" # Note: You may need to create this file
