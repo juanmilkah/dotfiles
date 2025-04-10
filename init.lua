@@ -116,6 +116,8 @@ require("lazy").setup({
 		end,
 	},
 
+	{ "akinsho/toggleterm.nvim", version = "*", config = true },
+
 	-- Other utilities
 	{ "wakatime/vim-wakatime", lazy = false },
 	{ "windwp/nvim-autopairs", event = "InsertEnter", config = true },
@@ -250,6 +252,41 @@ require("lazy").setup({
 		ft = "lua",
 		opts = { library = { { path = "${3rd}/luv/library", words = { "vim%.uv" } } } },
 	},
+
+	{
+		"simrat39/rust-tools.nvim",
+		dependencies = {
+			"neovim/nvim-lspconfig", -- Required for LSP support
+			"nvim-lua/plenary.nvim", -- Required by rust-tools
+		},
+		config = function()
+			local rt = require("rust-tools")
+
+			rt.setup({
+				tools = {
+					executor = require("rust-tools.executors").termopen, -- or quickfix
+					reload_workspace_from_cargo_toml = true,
+					runnables = {
+						use_telescope = true,
+					},
+					inlay_hints = {
+						auto = true,
+						show_parameter_hints = true,
+						parameter_hints_prefix = "<- ",
+						other_hints_prefix = "=> ",
+					},
+				},
+				server = {
+					on_attach = function(_, bufnr)
+						-- Hover actions
+						vim.keymap.set("n", "<Leader>rh", rt.hover_actions.hover_actions, { buffer = bufnr })
+						-- Code action groups
+						vim.keymap.set("n", "<Leader>ra", rt.code_action_group.code_action_group, { buffer = bufnr })
+					end,
+				},
+			})
+		end,
+	},
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
@@ -362,12 +399,6 @@ require("lazy").setup({
 			-- Server configurations
 			local servers = {
 				gopls = {},
-				rust_analyzer = {
-					imports = { granularity = { group = "module" }, prefix = "self" },
-					cargo = { buildScripts = { enable = true } },
-					procMacro = { enable = true },
-				},
-				ts_ls = {},
 				lua_ls = { settings = { Lua = { completion = { callSnippet = "Replace" } } } },
 			}
 
@@ -417,9 +448,9 @@ require("lazy").setup({
 			end,
 			formatters_by_ft = {
 				go = { "gopls" },
-				javascript = { "prettier" },
-				typescript = { "prettier" },
-				markdown = { "prettier" },
+				javascript = { "biome" },
+				typescript = { "biome" },
+				markdown = { "biome" },
 				lua = { "stylua" },
 				rust = { "rustfmt" },
 			},
@@ -565,3 +596,4 @@ require("lazy").setup({
 -- Final setup
 vim.cmd("colorscheme darcula")
 map("n", "<leader>mm", ":MarkdownPreviewToggle<CR>")
+map("n", "<leader>]]", ":ToggleTerm<CR>")
