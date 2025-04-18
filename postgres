@@ -1,0 +1,32 @@
+# Remove PostgreSQL completely
+sudo pacman -Rns postgresql
+
+# Remove data directory 
+sudo rm -rf /var/lib/postgres/data
+
+# Reinstall
+sudo pacman -S postgresql
+sudo -u postgres initdb -D /var/lib/postgres/data
+
+# Start and enable the service
+sudo systemctl enable --now postgresql
+
+# Create your user and database
+sudo -u postgres createuser --interactive
+sudo -u postgres createdb your_database
+
+-- Connect as postgres
+sudo -u postgres psql -d your_database
+
+-- Make sure your user can create and modify tables
+GRANT CREATE ON SCHEMA public TO your_username;
+GRANT USAGE ON SCHEMA public TO your_username;
+-- If RLS is causing issues, let your user bypass it
+ALTER ROLE your_username BYPASSRLS;
+-- Give ownership of the tables that GORM will manage
+ALTER TABLE IF EXISTS users OWNER TO your_username;
+ALTER TABLE IF EXISTS customers OWNER TO your_username;
+ALTER TABLE IF EXISTS service_providers OWNER TO your_username;
+-- If tables don't exist yet, make sure your user can create them
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO your_username;
+
