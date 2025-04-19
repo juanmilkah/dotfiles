@@ -51,6 +51,7 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': 
 
 " Colorscheme
 Plug 'doums/darcula'
+Plug 'flazz/vim-colorschemes'
 
 " Git signs - using vim-gitgutter
 Plug 'airblade/vim-gitgutter'
@@ -213,7 +214,7 @@ nnoremap <Leader>gu :GitGutterUndoHunk<CR>
 
 " =============================================================================
 " Fuzzy Finder (fzf.vim) shortcuts
-nnoremap <Leader>; :Files<CR>         
+nnoremap <Leader>; :FZF<CR>         
 nnoremap <Leader>fw :Rg <C-R><C-W><CR>  
 nnoremap <Leader>fg :Rg<CR>           
 nnoremap <Leader>s. :History<CR>      
@@ -223,6 +224,9 @@ nnoremap <Leader><Leader> :Buffers<CR>
 " Markdown Preview mapping
 let g:mkdp_filetypes = ['markdown'] " Ensure markdown preview works for markdown files
 nnoremap <Leader>mm :MarkdownPreviewToggle<CR>
+
+" Format on save
+autocmd BufWritePre * :call CocAction('format')
 
 " =============================================================================
 " End of vimrc
