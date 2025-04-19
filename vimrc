@@ -99,11 +99,11 @@ nnoremap <Leader>p "+p   " Added paste from clipboard
 " =============================================================================
 " Fuzzy Finder (fzf.vim) shortcuts
 
-nnoremap <Leader>; :Files<CR>          " Find files 
-nnoremap <Leader>fw :Rg <C-R><C-W><CR>  " Search current word 
-nnoremap <Leader>fg :Rg<CR>            " Live Grep 
-nnoremap <Leader>s. :History<CR>       " Search Recent Files 
-nnoremap <Leader><Leader> :Buffers<CR> " Find existing buffers 
+nnoremap <Leader>; :Files<CR>         
+nnoremap <Leader>fw :Rg <C-R><C-W><CR>  
+nnoremap <Leader>fg :Rg<CR>           
+nnoremap <Leader>s. :History<CR>      
+nnoremap <Leader><Leader> :Buffers<CR> 
 
 " =============================================================================
 " Markdown Preview mapping
