@@ -112,7 +112,11 @@ require("lazy").setup({
 		lazy = false,
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = function()
-			require("nvim-tree").setup({})
+			require("nvim-tree").setup({
+				view = {
+					width = 20,
+				},
+			})
 		end,
 	},
 
@@ -121,7 +125,39 @@ require("lazy").setup({
 	-- Other utilities
 	{ "wakatime/vim-wakatime", lazy = false },
 	{ "windwp/nvim-autopairs", event = "InsertEnter", config = true },
-	{ "nvim-lualine/lualine.nvim", dependencies = { "nvim-tree/nvim-web-devicons" }, opts = {} },
+	{
+		"nvim-lualine/lualine.nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		opts = {
+			options = {
+				theme = "auto", -- or your preferred theme
+				section_separators = { left = "", right = "" },
+				component_separators = { left = "", right = "" },
+				icons_enabled = true,
+				-- ... other options ...
+			},
+			sections = {
+				lualine_a = { "mode" },
+				lualine_b = { "branch", "diff", "diagnostics" },
+				lualine_c = { "filename" },
+				lualine_x = { "encoding", "fileformat", "filetype" },
+				lualine_y = { "progress" },
+				lualine_z = { "location" },
+			},
+			inactive_sections = {
+				lualine_a = {},
+				lualine_b = {},
+				lualine_c = { "filename" },
+				lualine_x = { "location" },
+				lualine_y = {},
+				lualine_z = {},
+			},
+			tabline = {},
+			winbar = {},
+			inactive_winbar = {},
+			extensions = {},
+		},
+	},
 
 	-- Which-key for keybinding help
 	{
@@ -276,14 +312,6 @@ require("lazy").setup({
 						other_hints_prefix = "=> ",
 					},
 				},
-				server = {
-					on_attach = function(_, bufnr)
-						-- Hover actions
-						vim.keymap.set("n", "<Leader>rh", rt.hover_actions.hover_actions, { buffer = bufnr })
-						-- Code action groups
-						vim.keymap.set("n", "<Leader>ra", rt.code_action_group.code_action_group, { buffer = bufnr })
-					end,
-				},
 			})
 		end,
 	},
@@ -400,6 +428,11 @@ require("lazy").setup({
 			local servers = {
 				gopls = {},
 				lua_ls = { settings = { Lua = { completion = { callSnippet = "Replace" } } } },
+				zls = {
+					settings = {
+						zig_exe_path = "/home/juan/.zig/zig",
+					},
+				},
 			}
 
 			-- Ensure tools are installed
