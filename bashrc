@@ -1,7 +1,4 @@
-#
 # ~/.bashrc
-#
-
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
@@ -19,6 +16,8 @@ alias open='xdg-open'
 alias vim='nvim'
 alias install='sudo pacman -S --needed'
 alias update='sudo pacman -Syu'
+alias rust='evcxr'
+alias hx='helix'
 
 PS1='[\u@\h \W]\$ '
 . "$HOME/.cargo/env"
@@ -57,3 +56,7 @@ parse_git_branch() {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
 export PS1="\u@\h \W\[\033[32m\]\$(parse_git_branch)\[\033[00m\] $ "
+
+export EDITOR="nvim"
+export TERM="xterm-256color"
+export COLORTERM=truecolor
