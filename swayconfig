@@ -7,8 +7,7 @@
 ### Variables
 #
 # Logo key. Use Mod1 for Alt.
-set $mod Mod4
-
+set $mod Mod1
 
 # Laptop screen
 output eDP-1 {
@@ -29,8 +28,8 @@ set $down j
 set $up k
 set $right l
 # Your preferred terminal emulator
-set $term alacritty
-exec alacritty
+set $term st
+exec st
 
 # Your preferred application launcher
 set $menu wmenu-run -b
@@ -41,7 +40,7 @@ default_border none
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
 # output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
-output * bg ~/setup.jpg fill
+output * bg ~/Downloads/arch-wallpaper.jpg fill
 #
 # Example configuration:
 output HDMI-A-1 resolution 1920x1080 position 1920,0
@@ -86,7 +85,7 @@ exec swayidle -w \
     # Kill focused window
     bindsym $mod+q kill
     
-    bindsym $mod+z exec swaylock
+    bindsym $mod+z exec swaylock -c 000000
 
     # Start your launcher
     bindsym $mod+d exec $menu
@@ -165,18 +164,18 @@ exec swayidle -w \
     bindsym $mod+v splitv
 
     # Switch the current container between different layout styles
-    bindsym $mod+s layout stacking
-    bindsym $mod+w layout tabbed
-    bindsym $mod+e layout toggle split
+    # bindsym $mod+s layout stacking
+    # bindsym $mod+w layout tabbed
+    # bindsym $mod+e layout toggle split
 
     # Make the current focus fullscreen
     bindsym $mod+f fullscreen
 
     # Toggle the current focus between tiling and floating mode
-    bindsym $mod+Shift+space floating toggle
+    # bindsym $mod+Shift+space floating toggle
 
     # Swap focus between the tiling area and the floating area
-    bindsym $mod+space focus mode_toggle
+    # bindsym $mod+space focus mode_toggle
 
     # Move focus to the parent container
     bindsym $mod+a focus parent
