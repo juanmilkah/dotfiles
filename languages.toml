@@ -12,8 +12,9 @@ command = "rust-analyzer"
 
 [language-server.rust-analyzer.config]
 check.command = "clippy"
-inlayHints.bindingModeHints.enable = true
-inlayHints.typeHints.enable = true
+
+[language-server.rust-analyzer.cargo]
+features = "all"
 
 [[language]]
 name = "typescript"
@@ -34,3 +35,12 @@ command = "deno"
 args = ["lsp"]
 config.deno.enable = true
 
+[[language]]
+name = "markdown"
+auto-format = true
+file-types = ["md"]
+language-servers = ["marksman"]
+
+[language-server.marksman]
+command = "marksman"
+args = ["server"]
