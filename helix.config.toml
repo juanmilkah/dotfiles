@@ -4,6 +4,7 @@ theme = "jetbrains_dark"
 line-number = "relative"
 mouse = true
 end-of-line-diagnostics = "hint"
+continue-comments = false
 
 [editor.cursor-shape]
 insert = "bar"
@@ -22,3 +23,14 @@ O = ["open_above", "normal_mode"] # "O", "O<Esc>"
 
 [keys.insert]
 j = {"k"= "normal_mode"}
+
+[editor.indent-guides]
+render = true
+character = "╎" # Some characters that work well: "▏", "┆", "┊", "⸽"
+skip-levels = 1
+
+[editor.soft-wrap]
+wrap-at-text-width = true
+
+[editor.smart-tab]
+enable = false

@@ -1,0 +1,25 @@
+[general]
+import = [
+    "~/.config/alacritty/themes/themes/terminal_app.toml"
+]
+
+[window]
+decorations = "None"
+startup_mode = "Fullscreen"
+
+[font]
+normal = { family = "VictorMonoNerdFont", style = "Regular"}
+size = 17.50
+
+[colors.primary]
+foreground = "#00ff00"
+background = "#000000"
+
+[selection]
+save_to_clipboard = true
+
+[cursor]
+style = { shape = "Underline", blinking = "Always"}
+
+[mouse]
+hide_when_typing = true
