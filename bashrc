@@ -9,14 +9,12 @@ alias g='git'
 alias diff='git diff'
 alias gs='git status'
 alias ca='cargo'
-alias ll='ls -lah'
+alias ll='ls -lh'
 alias grep='grep --color=auto'
 alias tm='tmux-sessionizer'
 alias open='xdg-open'
-alias vim='nvim'
 alias install='sudo pacman -S --needed'
 alias update='sudo pacman -Syu'
-alias rust='evcxr'
 alias hx='helix'
 
 PS1='[\u@\h \W]\$ '
@@ -60,3 +58,5 @@ export PS1="\u@\h \W\[\033[32m\]\$(parse_git_branch)\[\033[00m\] $ "
 export EDITOR="nvim"
 export TERM="xterm-256color"
 export COLORTERM=truecolor
+
+PROMPT_COMMAND='echo -ne "\033[0J"'
