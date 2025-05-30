@@ -5,6 +5,7 @@ line-number = "relative"
 mouse = true
 end-of-line-diagnostics = "hint"
 continue-comments = false
+soft-wrap.enable = true
 
 [editor.cursor-shape]
 insert = "bar"
@@ -28,9 +29,6 @@ j = {"k"= "normal_mode"}
 render = true
 character = "╎" # Some characters that work well: "▏", "┆", "┊", "⸽"
 skip-levels = 1
-
-[editor.soft-wrap]
-wrap-at-text-width = true
 
 [editor.smart-tab]
 enable = false
