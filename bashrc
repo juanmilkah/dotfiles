@@ -29,14 +29,6 @@ export PATH="~/bash-scripts:$PATH"
 # You may need to manually set your language environment
  export LANG=en_US.UTF-8
 
-# Preferred editor for local and remote sessions
- if [[ -n $SSH_CONNECTION ]]; then
-   export EDITOR='vim'
- else
-   export EDITOR='nvim'
- fi
-
-
 # Add Bun's bin directory to PATH
 export PATH="~/.bun/bin:$PATH"
 
@@ -55,7 +47,7 @@ parse_git_branch() {
 }
 export PS1="\u@\h \W\[\033[32m\]\$(parse_git_branch)\[\033[00m\] $ "
 
-export EDITOR="nvim"
+export EDITOR="helix"
 export TERM="xterm-256color"
 export COLORTERM=truecolor
 
