@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# Generate SSH key
+echo "Generating SSH key..."
+ssh-keygen -t ed25519 -C "$(git config --global user.email)"
+
+# Start SSH agent
+eval "$(ssh-agent -s)"
+
+# Add SSH key to agent
+ssh-add ~/.ssh/id_ed25519
+
+# Copy public key to clipboard (requires xclip)
+if ! command -v xclip &> /dev/null; then
+    echo "Installing xclip..."
+    sudo pacman -S xclip --noconfirm
+fi
+
+xclip -sel clip < ~/.ssh/id_ed25519.pub
+
+# Instructions for adding key to GitHub
+echo "Your SSH key has been copied to clipboard."
+echo "Please follow these steps:"
+echo "1. Go to GitHub.com"
+echo "2. Click your profile picture → Settings"
+echo "3. Click 'SSH and GPG keys' on the left"
+echo "4. Click 'New SSH key'"
+echo "5. Paste the key (it's already in your clipboard)"
+echo "6. Click 'Add SSH key'"
+echo ""
+echo "After adding the key, press Enter to test the connection..."
+read -r
+
+# Test SSH connection
+ssh -T git@github.com

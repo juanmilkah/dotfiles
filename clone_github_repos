@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Create a directory for repositories if it doesn't exist
+REPO_DIR="$HOME/personal"
+mkdir -p "$REPO_DIR"
+cd "$REPO_DIR" || exit
+
+echo "Starting repository cloning process..."
+
+# Get list of repositories and clone each one using HTTPS
+gh repo list --json nameWithOwner,url -L 1000 | jq -r '.[] | .url' | while read -r repo_url; do
+    repo_name=$(basename "$repo_url" .git)
+    if [ ! -d "$repo_name" ]; then
+        echo "Cloning $repo_name..."
+        gh repo clone "$repo_url"
+    else
+        echo "Repository $repo_name already exists, updating..."
+        (cd "$repo_name" && git pull)
+    fi
+done
+
+echo "All repositories have been cloned/updated in $REPO_DIR"
+echo "Total repositories: $(ls -d */ 2>/dev/null | wc -l)"

@@ -3,6 +3,8 @@
 
 let mapleader = " "
 
+set clipboard=unnamedplus
+
 " Disable compatibility with vi which can cause unexpected issues.
 set nocompatible
 
@@ -38,7 +40,7 @@ set nobackup
 set scrolloff=10
 
 " Do not wrap lines. Allow long lines to extend as far as the line goes.
-set wrap
+set nowrap
 
 " While searching though a file incrementally highlight matching characters as you type.
 set incsearch
@@ -124,6 +126,9 @@ Plug 'blueshirts/darcula'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 Plug 'tpope/vim-fugitive'  
+Plug 'airblade/vim-gitgutter' 
+
+Plug 'tpope/vim-commentary'
 
 call plug#end()
 

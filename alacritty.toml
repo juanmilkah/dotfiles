@@ -9,10 +9,10 @@ startup_mode = "Fullscreen"
 
 [font]
 normal = { family = "VictorMonoNerdFont", style = "Regular"}
-size = 17.50
+size = 15.00
 
 [colors.primary]
-foreground = "#00ff00"
+foreground = "#ffffff"
 background = "#000000"
 
 [selection]
