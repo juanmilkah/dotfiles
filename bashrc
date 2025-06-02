@@ -27,7 +27,7 @@ source /home/juan/.local/share/bash-completion/completions/deno.bash
 export PATH="~/bash-scripts:$PATH"
 
 # You may need to manually set your language environment
- export LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
 
 # Add Bun's bin directory to PATH
 export PATH="~/.bun/bin:$PATH"
@@ -47,8 +47,7 @@ parse_git_branch() {
 }
 export PS1="\u@\h \W\[\033[32m\]\$(parse_git_branch)\[\033[00m\] $ "
 
-export EDITOR="helix"
-export TERM="xterm-256color"
-export COLORTERM=truecolor
+export EDITOR="nvim"
+export TERM="screen-256color"
 
 PROMPT_COMMAND='echo -ne "\033[0J"'
