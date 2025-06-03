@@ -1,4 +1,5 @@
-theme = "jetbrains_dark"
+# This is a comment
+theme = "darcula-solid"
 
 [editor]
 line-number = "relative"
@@ -21,6 +22,7 @@ cursor-line = "info"
 [keys.normal]
 o = ["open_below", "normal_mode"] # "o", "o<Esc>"
 O = ["open_above", "normal_mode"] # "O", "O<Esc>"
+";" = "exit_select_mode"
 
 [keys.insert]
 j = {"k"= "normal_mode"}

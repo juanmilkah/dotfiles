@@ -47,7 +47,7 @@ parse_git_branch() {
 }
 export PS1="\u@\h \W\[\033[32m\]\$(parse_git_branch)\[\033[00m\] $ "
 
-export EDITOR="nvim"
+export EDITOR="helix"
 export TERM="screen-256color"
 
 PROMPT_COMMAND='echo -ne "\033[0J"'
