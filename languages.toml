@@ -44,3 +44,16 @@ language-servers = ["marksman"]
 [language-server.marksman]
 command = "marksman"
 args = ["server"]
+
+[[language]]
+name = "cpp"
+scope = "source.cpp"
+injection-regex = "cpp"
+file-types = ["cpp", "cc", "cxx", "hpp", "h", "hxx"]
+roots = ["CMakeLists.txt", "compile_commands.json", ".clangd"]
+auto-format = true
+language-servers = ["clangd"]
+
+[language-server.clangd]
+command = "clangd"
+args = ["--background-index", "--clang-tidy"]

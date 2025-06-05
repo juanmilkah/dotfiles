@@ -4,12 +4,11 @@ import = [
 ]
 
 [window]
-decorations = "None"
 startup_mode = "Fullscreen"
 
 [font]
-normal = { family = "VictorMonoNerdFont", style = "Regular"}
-size = 16.00
+normal = { family = "UbuntuSansMonoNerdFontMono", style = "Regular"}
+size = 17.50
 
 [colors.primary]
 foreground = "#ffffff"
