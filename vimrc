@@ -24,10 +24,10 @@ syntax on
 set number
 set relativenumber
 
-" Set shift width to 4 spaces.
+" Set shift width to 2 spaces.
 set shiftwidth=2
 
-" Set tab width to 4 columns.
+" Set tab width to 2 columns.
 set tabstop=2
 
 " Use space characters instead of tabs.
@@ -62,7 +62,7 @@ set showmode
 set showmatch
 
 " Don't Use highlighting when doing a search.
-set nohlsearch
+set nohlsearch 
 
 " Set the commands to save in history default number is 20.
 set history=1000
@@ -75,15 +75,6 @@ set wildmode=list:longest
 
 " Allow mouse support
 set mouse=a
-
-" Map keys for autocompletion
-inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <silent><expr> <S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
-
-" lsp support
-nmap <leader>gd <Plug>(coc-definition)
-nmap <leader>gi <Plug>(coc-implementation)
-nmap <leader>gr <Plug>(coc-references)
 
 " Pressing the letter o will open a new line below the current one.
 " Exit insert mode after creating a new line above or below the current line.
@@ -110,10 +101,6 @@ set background=dark
 nnoremap <leader>/ :GFiles --cached --others --exclude-standard<CR>
 
 
-" Format on save
-autocmd BufWritePre * :silent! call CocAction('format')
-
-
 " PLUGINS ---------------------------------------------------------------- {{{
 
 call plug#begin('~/.vim/plugged')
@@ -123,7 +110,7 @@ Plug 'junegunn/fzf.vim'
 
 Plug 'blueshirts/darcula'
 
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'dense-analysis/ale'
 
 Plug 'tpope/vim-fugitive'  
 Plug 'airblade/vim-gitgutter' 
@@ -137,8 +124,6 @@ call plug#end()
 " Set colorscheme
 colorscheme darcula
 
-" Make Coc inlay hints look like comments (gray)
-highlight! link CocInlayHint Comment
 
 " STATUS LINE ------------------------------------------------------------ {{{
 
@@ -155,7 +140,7 @@ set statusline+=%=
 set statusline+=\ ascii:\ %b\ hex:\ 0x%B\ row:\ %l\ col:\ %c\ percent:\ %p%%
 
 " Show the status on the second to last line.
-set laststatus=2
+set laststatus=1 " ON the last line
 
 " }}}
 
