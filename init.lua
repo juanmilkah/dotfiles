@@ -202,6 +202,10 @@ require("lazy").setup({
 			-- Set the colorscheme
 			vim.cmd.colorscheme("ayu-dark")
 
+			vim.api.nvim_set_hl(0, "Comment", { fg = "#FF8C00" }) -- Orange comments
+			vim.api.nvim_set_hl(0, "LineNr", { fg = "#FF8C00" }) -- Orange line numbers
+			vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#FFA500" }) -- Brighter orange for current line
+
 			require("lualine").setup({
 				options = {
 					theme = "ayu",
