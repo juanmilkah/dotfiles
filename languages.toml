@@ -9,6 +9,7 @@ language-servers = ["rust-analyzer"]
 
 [language-server.rust-analyzer]
 command = "rust-analyzer"
+enable_semantic_tokens = true
 
 [language-server.rust-analyzer.config]
 check.command = "clippy"
@@ -57,3 +58,16 @@ language-servers = ["clangd"]
 [language-server.clangd]
 command = "clangd"
 args = ["--background-index", "--clang-tidy"]
+
+[[language]]
+name = "zig"
+scope = "source.zig"
+injection-regex = "zig"
+file-types = ["zig"]
+roots = ["build.zig", "build.zig.zon"]
+auto-format = true
+language-servers = ["zls"]
+
+[language-server.zls]
+command = "zls"
+enable_semantic_tokens = true

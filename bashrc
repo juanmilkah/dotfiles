@@ -9,7 +9,7 @@ alias g='git'
 alias diff='git diff'
 alias gs='git status'
 alias ca='cargo'
-alias ll='ls -lha'
+alias ll='ls -lh'
 alias grep='grep --color=auto'
 alias tm='tmux-sessionizer'
 alias open='xdg-open'
@@ -37,8 +37,6 @@ export PATH="~/go/bin:$PATH"
 
 # Add user's local bin directory to PATH
 export PATH="$HOME/.local/bin:$PATH"
-
-export PATH="~/.zig:$PATH"
 
 # Git branch in prompt.
 parse_git_branch() {

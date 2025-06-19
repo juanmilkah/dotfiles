@@ -211,6 +211,14 @@ require("lazy").setup({
 	},
 
 	{
+		"windwp/nvim-autopairs",
+		event = "InsertEnter",
+		config = true,
+		-- use opts = {} for passing setup options
+		-- this is equivalent to setup({}) function
+	},
+
+	{
 		"folke/lazydev.nvim",
 		ft = "lua",
 		opts = {
@@ -364,6 +372,7 @@ require("lazy").setup({
 				-- gopls = {},
 				-- pyright = {},
 				rust_analyzer = {},
+				zls = {},
 				-- ts_ls = {},
 
 				lua_ls = {
@@ -429,6 +438,7 @@ require("lazy").setup({
 			formatters_by_ft = {
 				lua = { "stylua" },
 				rust = { "rustfmt" },
+				zig = { "zls" },
 				-- python = { "isort", "black" },
 				-- javascript = { "prettierd", "prettier", stop_after_first = true },
 			},
@@ -459,6 +469,9 @@ require("lazy").setup({
 		opts = {
 			keymap = {
 				preset = "default",
+				["<CR>"] = { "accept", "fallback" },
+				["<Tab>"] = { "select_next", "fallback" },
+				["<S-Tab>"] = { "select_prev", "fallback" },
 			},
 			appearance = {
 				nerd_font_variant = "mono",
@@ -476,7 +489,8 @@ require("lazy").setup({
 			},
 
 			snippets = { preset = "luasnip" },
-			fuzzy = { implementation = "prefer_rust_with_warning" }, -- try lua
+			-- fuzzy = { implementation = "prefer_rust_with_warning" }, -- try lua
+			fuzzy = { implementation = "lua" }, -- try lua
 			signature = { enabled = true },
 		},
 	},
@@ -538,4 +552,4 @@ require("lazy").setup({
 	},
 })
 
-vim.o.background = dark
+vim.o.background = "dark"
