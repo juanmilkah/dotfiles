@@ -1,146 +1,105 @@
-"Inspiration from this
-"https://www.freecodecamp.org/news/vimrc-configuration-guide-customize-your-vim-editor/
-
+" Leader key
 let mapleader = " "
 
-set clipboard=unnamedplus
-
-" Disable compatibility with vi which can cause unexpected issues.
+" Basic settings
 set nocompatible
+"set clipboard=unnamedplus
+set mouse=a
+set confirm
 
-" Enable type file detection. Vim will be able to try to detect the type of file in use.
-filetype on
-
-" Enable plugins and load plugin for the detected file type.
-filetype plugin on
-
-" Load an indent file for the detected file type.
-filetype indent on
-
-" Turn syntax highlighting on.
-syntax on
-
-"Add numbers to each line on the left-hand side.
+" Display
 set number
 set relativenumber
-
-" Set shift width to 2 spaces.
-set shiftwidth=2
-
-" Set tab width to 2 columns.
-set tabstop=2
-
-" Use space characters instead of tabs.
-set expandtab
-
-" Do not save backup files.
-set nobackup
-
-" Do not let cursor scroll below or above N number of lines when scrolling.
-set scrolloff=10
-
-" Do not wrap lines. Allow long lines to extend as far as the line goes.
-set nowrap
-
-" While searching though a file incrementally highlight matching characters as you type.
-set incsearch
-
-" Ignore capital letters during search.
-set ignorecase
-
-" Override the ignorecase option if searching for capital letters.
-" This will allow you to search specifically for capital letters.
-set smartcase
-
-" Show partial command you type in the last line of the screen.
-set showcmd
-
-" Show the mode you are on the last line.
 set showmode
+set showcmd
+set laststatus=2
 
-" Show matching words during a search.
-set showmatch
+" Indentation
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
+set expandtab
+set breakindent
 
-" Don't Use highlighting when doing a search.
-set nohlsearch 
+" Search
+set incsearch
+set ignorecase
+set smartcase
+set nohlsearch
 
-" Set the commands to save in history default number is 20.
-set history=1000
+" Files and backup
+set nobackup
+set undofile
+filetype on
+filetype plugin on
+filetype indent on
+syntax on
 
-" Enable auto completion menu after pressing TAB.
-set wildmenu
+" Performance
+set updatetime=250
+set timeoutlen=300
+set lazyredraw
 
-" Make wildmenu behave like similar to Bash completion.
-set wildmode=list:longest
+" Splits
+set splitright
+set splitbelow
 
-" Allow mouse support
-set mouse=a
-
-" Pressing the letter o will open a new line below the current one.
-" Exit insert mode after creating a new line above or below the current line.
-nnoremap o o<esc>
-nnoremap O O<esc>
-
-" Center the cursor vertically when moving to the next word during a search.
+" Key mappings
+nnoremap <Esc> :nohlsearch<CR>
+nnoremap o o<Esc>
+nnoremap O O<Esc>
+inoremap jk <Esc>
+nnoremap Y y$
 nnoremap n nzz
 nnoremap N Nzz
 
-" Yank from cursor to the end of line.
-nnoremap Y y$
-
-" There are certain files that we would never want to edit with Vim.
-" Wildmenu will ignore files with these extensions.
-set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx
-
-inoremap jk <esc>
-
-" Set the background tone.
-set background=dark
-
-" Search for files, respecting gitignore
-nnoremap <leader>/ :GFiles --cached --others --exclude-standard<CR>
-
-
-" PLUGINS ---------------------------------------------------------------- {{{
-
+" Plugins
 call plug#begin('~/.vim/plugged')
-
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-
 Plug 'blueshirts/darcula'
-
-Plug 'dense-analysis/ale'
-
-Plug 'tpope/vim-fugitive'  
-Plug 'airblade/vim-gitgutter' 
-
 Plug 'tpope/vim-commentary'
-
+Plug 'airblade/vim-gitgutter'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
 call plug#end()
 
-" }}}
-
-" Set colorscheme
+" Color scheme
+set background=dark
 colorscheme darcula
 
+" Custom colors
+highlight Normal guibg=#181818 ctermbg=234
+highlight Comment guifg=#FF8C00 ctermfg=208
+highlight LineNr guifg=#FF8C00 ctermfg=208
+highlight CursorLineNr guifg=#FFA500 ctermfg=214
 
-" STATUS LINE ------------------------------------------------------------ {{{
+" LSP settings
+let g:lsp_signs_enabled = 1
+let g:lsp_diagnostics_echo_cursor = 1
+let g:lsp_highlight_references_enabled = 1
 
-" Clear status line when vimrc is reloaded.
-set statusline=
+" LSP key mappings
+nmap <silent> gd <plug>(lsp-definition)
+nmap <silent> gr <plug>(lsp-references)
+nmap <silent> gi <plug>(lsp-implementation)
+nmap <silent> gt <plug>(lsp-type-definition)
+nmap <silent> gn <plug>(lsp-rename)
+nmap <silent> ga <plug>(lsp-code-action)
+nmap <silent> K <plug>(lsp-hover)
 
-" Status line left side.
-set statusline+=\ %F\ %M\ %Y\ %R
+" Asyncomplete settings
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
 
-" Use a divider to separate the left side from the right side.
-set statusline+=%=
+" FZF mappings
+" nnoremap <leader>f :Files<CR>
+nnoremap <leader>f :GFiles --cached --others --exclude-standard<CR>
+nnoremap <leader>fg :Rg<CR>
+nnoremap <leader>/ :BLines<CR>
 
-" Status line right side.
-set statusline+=\ ascii:\ %b\ hex:\ 0x%B\ row:\ %l\ col:\ %c\ percent:\ %p%%
-
-" Show the status on the second to last line.
-set laststatus=1 " ON the last line
-
-" }}}
-
+" Simple status line
+set statusline=%f\ %m%r%h%w%=%l,%c\ %P

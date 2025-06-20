@@ -49,4 +49,7 @@ font-family = "IosevkaTermNerdFont"
 font-style = "Regular"
 font-size = 18
 
+window-decoration = "none"
+window-save-state = "always"
+
 theme = "iTerm2 Dark Background"

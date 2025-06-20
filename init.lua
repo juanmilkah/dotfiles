@@ -39,7 +39,7 @@ vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 -- Preview substitutions live, as you type!
 vim.o.inccommand = "split"
 
-vim.o.scrolloff = 10
+-- vim.o.scrolloff = 10
 
 vim.o.confirm = true
 
@@ -372,7 +372,7 @@ require("lazy").setup({
 			local capabilities = require("blink.cmp").get_lsp_capabilities()
 
 			local servers = {
-				-- clangd = {},
+				clangd = {},
 				-- gopls = {},
 				-- pyright = {},
 				rust_analyzer = {},
@@ -443,6 +443,7 @@ require("lazy").setup({
 				lua = { "stylua" },
 				rust = { "rustfmt" },
 				zig = { "zls" },
+				c = { "clang" },
 				-- python = { "isort", "black" },
 				-- javascript = { "prettierd", "prettier", stop_after_first = true },
 			},

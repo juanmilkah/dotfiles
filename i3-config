@@ -8,13 +8,18 @@
 # To get a config file with the same key positions, but for your current
 # layout, use the i3-config-wizard
 #
+
+exec xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Tapping Enabled" 1
+
 default_border none
+
+set $MainMod Mod1
 
 set $terminal ghostty
 exec $terminal
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:monospace 8
+font pango:IosevkaTermMonoNerdFont 10
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -30,6 +35,14 @@ exec --no-startup-id dex --autostart --environment i3
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+
+# input "2:7:SynPS/2_Synaptics_TouchPad" {
+#     dwt enabled
+#     tap enabled
+#     natural_scroll enabled
+#     middle_emulation enabled
+# }
+
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
@@ -53,86 +66,86 @@ set $down k
 set $left j
 set $right semicolon
 
-# use Mouse+Mod1 to drag floating windows to their wanted position
-floating_modifier Mod1
+# use Mouse+$MainMod to drag floating windows to their wanted position
+floating_modifier $MainMod
 
 # move tiling windows via drag & drop by left-clicking into the title bar,
 # or left-clicking anywhere into the window while holding the floating modifier.
 tiling_drag modifier titlebar
 
 # Lock the screen 
-bindsym Mod1+z exec i3lock -f -e -c 000000
+bindsym $MainMod+z exec i3lock -f -e -c 000000
 
 # start a terminal
-bindsym Mod1+Return exec $terminal
+bindsym $MainMod+Return exec $terminal
 
 # kill focused window
-bindsym Mod1+Shift+q kill
+bindsym $MainMod+Shift+q kill
 
 # start dmenu (a program launcher)
-bindsym Mod1+d exec --no-startup-id rofi -show run
+bindsym $MainMod+d exec --no-startup-id rofi -show run
 # A more modern dmenu replacement is rofi:
-# bindsym Mod1+d exec "rofi -modi drun,run -show drun"
+# bindsym $MainMod+d exec "rofi -modi drun,run -show drun"
 # There also is i3-dmenu-desktop which only displays applications shipping a
 # .desktop file. It is a wrapper around dmenu, so you need that installed.
-# bindsym Mod1+d exec --no-startup-id i3-dmenu-desktop
+# bindsym $MainMod+d exec --no-startup-id i3-dmenu-desktop
 
 # change focus
-bindsym Mod1+$left focus left
-bindsym Mod1+$down focus down
-bindsym Mod1+$up focus up
-bindsym Mod1+$right focus right
+bindsym $MainMod+$left focus left
+bindsym $MainMod+$down focus down
+bindsym $MainMod+$up focus up
+bindsym $MainMod+$right focus right
 
 # alternatively, you can use the cursor keys:
-bindsym Mod1+Left focus left
-bindsym Mod1+Down focus down
-bindsym Mod1+Up focus up
-bindsym Mod1+Right focus right
+bindsym $MainMod+Left focus left
+bindsym $MainMod+Down focus down
+bindsym $MainMod+Up focus up
+bindsym $MainMod+Right focus right
 
 # move focused window
-bindsym Mod1+Shift+$left move left
-bindsym Mod1+Shift+$down move down
-bindsym Mod1+Shift+$up move up
-bindsym Mod1+Shift+$right move right
+bindsym $MainMod+Shift+$left move left
+bindsym $MainMod+Shift+$down move down
+bindsym $MainMod+Shift+$up move up
+bindsym $MainMod+Shift+$right move right
 
 # alternatively, you can use the cursor keys:
-bindsym Mod1+Shift+Left move left
-bindsym Mod1+Shift+Down move down
-bindsym Mod1+Shift+Up move up
-bindsym Mod1+Shift+Right move right
+bindsym $MainMod+Shift+Left move left
+bindsym $MainMod+Shift+Down move down
+bindsym $MainMod+Shift+Up move up
+bindsym $MainMod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym Mod1+h split h
+bindsym $MainMod+h split h
 
 # split in vertical orientation
-bindsym Mod1+v split v
+bindsym $MainMod+v split v
 
 # enter fullscreen mode for the focused container
-bindsym Mod1+f fullscreen toggle
+bindsym $MainMod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-# bindsym Mod1+s layout stacking
-# bindsym Mod1+w layout tabbed
-# bindsym Mod1+e layout toggle split
+# bindsym $MainMod+s layout stacking
+# bindsym $MainMod+w layout tabbed
+# bindsym $MainMod+e layout toggle split
 
 # toggle tiling / floating
-# bindsym Mod1+Shift+space floating toggle
+# bindsym $MainMod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
-# bindsym Mod1+space focus mode_toggle
+# bindsym $MainMod+space focus mode_toggle
 
 # focus the parent container
-bindsym Mod1+a focus parent
+bindsym $MainMod+a focus parent
 
 # focus the child container
-#bindsym Mod1+d focus child
+#bindsym $MainMod+d focus child
 
 # move the currently focused window to the scratchpad
-bindsym Mod1+Shift+minus move scratchpad
+bindsym $MainMod+Shift+minus move scratchpad
 
 # Show the next scratchpad window or hide the focused scratchpad window.
 # If there are multiple scratchpad windows, this command cycles through them.
-bindsym Mod1+minus scratchpad show
+bindsym $MainMod+minus scratchpad show
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
@@ -148,35 +161,35 @@ set $ws9 "9"
 set $ws10 "10"
 
 # switch to workspace
-bindsym Mod1+1 workspace number $ws1
-bindsym Mod1+2 workspace number $ws2
-bindsym Mod1+3 workspace number $ws3
-bindsym Mod1+4 workspace number $ws4
-bindsym Mod1+5 workspace number $ws5
-bindsym Mod1+6 workspace number $ws6
-bindsym Mod1+7 workspace number $ws7
-bindsym Mod1+8 workspace number $ws8
-bindsym Mod1+9 workspace number $ws9
-bindsym Mod1+0 workspace number $ws10
+bindsym $MainMod+1 workspace number $ws1
+bindsym $MainMod+2 workspace number $ws2
+bindsym $MainMod+3 workspace number $ws3
+bindsym $MainMod+4 workspace number $ws4
+bindsym $MainMod+5 workspace number $ws5
+bindsym $MainMod+6 workspace number $ws6
+bindsym $MainMod+7 workspace number $ws7
+bindsym $MainMod+8 workspace number $ws8
+bindsym $MainMod+9 workspace number $ws9
+bindsym $MainMod+0 workspace number $ws10
 
 # move focused container to workspace
-bindsym Mod1+Shift+1 move container to workspace number $ws1
-bindsym Mod1+Shift+2 move container to workspace number $ws2
-bindsym Mod1+Shift+3 move container to workspace number $ws3
-bindsym Mod1+Shift+4 move container to workspace number $ws4
-bindsym Mod1+Shift+5 move container to workspace number $ws5
-bindsym Mod1+Shift+6 move container to workspace number $ws6
-bindsym Mod1+Shift+7 move container to workspace number $ws7
-bindsym Mod1+Shift+8 move container to workspace number $ws8
-bindsym Mod1+Shift+9 move container to workspace number $ws9
-bindsym Mod1+Shift+0 move container to workspace number $ws10
+bindsym $MainMod+Shift+1 move container to workspace number $ws1
+bindsym $MainMod+Shift+2 move container to workspace number $ws2
+bindsym $MainMod+Shift+3 move container to workspace number $ws3
+bindsym $MainMod+Shift+4 move container to workspace number $ws4
+bindsym $MainMod+Shift+5 move container to workspace number $ws5
+bindsym $MainMod+Shift+6 move container to workspace number $ws6
+bindsym $MainMod+Shift+7 move container to workspace number $ws7
+bindsym $MainMod+Shift+8 move container to workspace number $ws8
+bindsym $MainMod+Shift+9 move container to workspace number $ws9
+bindsym $MainMod+Shift+0 move container to workspace number $ws10
 
 # reload the configuration file
-bindsym Mod1+Shift+c reload
+bindsym $MainMod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym Mod1+Shift+r restart
+bindsym $MainMod+Shift+r restart
 # exit i3 (logs you out of your X session)
-bindsym Mod1+Shift+e exec i3-msg exit
+bindsym $MainMod+Shift+e exec i3-msg exit
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -197,22 +210,19 @@ mode "resize" {
         bindsym Up          resize shrink height 10 px or 10 ppt
         bindsym Right       resize grow width 10 px or 10 ppt
 
-        # back to normal: Enter or Escape or Mod1+r
+        # back to normal: Enter or Escape or $MainMod+r
         bindsym Return mode "default"
         bindsym Escape mode "default"
-        bindsym Mod1+r mode "default"
+        bindsym $MainMod+r mode "default"
 }
 
-bindsym Mod1+r mode "resize"
+bindsym $MainMod+r mode "resize"
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
         status_command i3status
-        colors{
-          statusline #00ff00
-          background #000000
-        }
+        mode hide
 }
 
 #######################################################################
