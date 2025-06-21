@@ -1,5 +1,5 @@
 # This is a comment
-theme = "darcula-solid"
+theme = "ayu_dark"
 
 [editor]
 line-number = "relative"

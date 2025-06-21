@@ -64,6 +64,8 @@ Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'dense-analysis/ale'
+Plug 'jiangmiao/auto-pairs'
 call plug#end()
 
 " Color scheme
@@ -90,14 +92,24 @@ nmap <silent> gn <plug>(lsp-rename)
 nmap <silent> ga <plug>(lsp-code-action)
 nmap <silent> K <plug>(lsp-hover)
 
+" ALE settings for formatting
+let g:ale_fixers = {
+\   'rust': ['rustfmt'],
+\   'c': ['clang-format'],
+\   'cpp': ['clang-format'],
+\   'lua': ['stylua'],
+\   'zig': ['zigfmt'],
+\}
+let g:ale_fix_on_save = 1
+let g:ale_linters_explicit = 1
+
 " Asyncomplete settings
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
 
 " FZF mappings
-" nnoremap <leader>f :Files<CR>
-nnoremap <leader>f :GFiles --cached --others --exclude-standard<CR>
+nnoremap <leader>ff :GFiles --cached --others --exclude-standard<CR>
 nnoremap <leader>fg :Rg<CR>
 nnoremap <leader>/ :BLines<CR>
 
