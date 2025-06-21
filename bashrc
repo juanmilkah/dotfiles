@@ -12,10 +12,12 @@ alias ca='cargo'
 alias ll='ls -lh'
 alias grep='grep --color=auto'
 alias tm='tmux-sessionizer'
-alias open='xdg-open'
+alias open='handlr open'
 alias install='sudo pacman -S --needed'
 alias update='sudo pacman -Syu'
-alias hx='helix'
+alias remove='sudo pacman -Rnsc'
+alias unused='sudo pacman -Qtdq'
+alias vim='helix'
 alias copy='xclip -sel clip'
 
 PS1='[\u@\h \W]\$ '
@@ -27,9 +29,6 @@ export PATH="~/dotfiles:$PATH"
 
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
-
-# Add Bun's bin directory to PATH
-export PATH="~/.bun/bin:$PATH"
 
 # Go configuration
 export PATH="/usr/local/go/bin:$PATH"
@@ -44,6 +43,6 @@ parse_git_branch() {
 }
 export PS1="\u@\h \W\[\033[32m\]\$(parse_git_branch)\[\033[00m\] $ "
 
-export EDITOR="vim"
+export EDITOR="helix"
 export TERM="screen-256color"
 
