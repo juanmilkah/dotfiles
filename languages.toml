@@ -55,6 +55,15 @@ roots = ["CMakeLists.txt", "compile_commands.json", ".clangd"]
 auto-format = true
 language-servers = ["clangd"]
 
+[[language]]
+name = "c"
+scope = "source.c"
+injection-regex = "c"
+file-types = ["h", "c"]
+roots = ["CMakeLists.txt", "compile_commands.json", ".clangd"]
+auto-format = true
+language-servers = ["clangd"]
+
 [language-server.clangd]
 command = "clangd"
 args = ["--background-index", "--clang-tidy"]

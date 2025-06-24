@@ -1,5 +1,5 @@
 # This is a comment
-theme = "ayu_dark"
+theme = "gruber-darker"
 
 [editor]
 line-number = "relative"
@@ -7,14 +7,6 @@ mouse = true
 end-of-line-diagnostics = "hint"
 continue-comments = false
 soft-wrap.enable = true
-
-[editor.cursor-shape]
-insert = "bar"
-normal = "block"
-select = "underline"
-
-[editor.file-picker]
-hidden = false
 
 [editor.inline-diagnostics]
 cursor-line = "info"

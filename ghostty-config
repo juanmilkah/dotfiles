@@ -42,12 +42,12 @@
 # # Just for example:
 # resize-overlay-duration = 4s 200ms
 
-foreground = 00ff00
+foreground = ffffff
 background = 000000
 
 font-family = "IosevkaTermNerdFont"
 font-style = "Regular"
-font-size = 18
+font-size = 19
 
 window-decoration = "none"
 window-save-state = "always"
