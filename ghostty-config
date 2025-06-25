@@ -43,11 +43,11 @@
 # resize-overlay-duration = 4s 200ms
 
 foreground = ffffff
-background = 000000
+background = 181818
 
 font-family = "IosevkaTermNerdFont"
 font-style = "Regular"
-font-size = 19
+font-size = 17
 
 window-decoration = "none"
 window-save-state = "always"
