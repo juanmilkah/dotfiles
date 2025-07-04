@@ -50,6 +50,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   "NMAC427/guess-indent.nvim",
+   { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = { scope = { enabled = false}, indent = { char = "·", }} },
   { "lewis6991/gitsigns.nvim", opts = { signs = { add = { text = "+" }, change = { text = "~" }, delete = { text = "_" }, topdelete = { text = "‾" }, changedelete = { text = "~" } } } },
   { "folke/which-key.nvim", event = "VimEnter", opts = { delay = 0, icons = { mappings = vim.g.have_nerd_font, keys = vim.g.have_nerd_font and {} or {} }, spec = { { "<leader>f", group = "[F]ind" }, { "<leader>t", group = "[T]oggle" }, { "<leader>h", group = "Git [H]unk", mode = { "n", "v" } } } } },
 
@@ -118,14 +119,13 @@ require("lazy").setup({
         end,
       })
 
-      -- CORRECTED: The diagnostic configuration is now cleaner and more robust.
       vim.diagnostic.config({
         severity_sort = true,
         float = { border = "rounded", source = "if_many" },
         underline = { severity = vim.diagnostic.severity.ERROR },
         signs = vim.g.have_nerd_font and { text = { [vim.diagnostic.severity.ERROR] = "󰅚 ", [vim.diagnostic.severity.WARN] = "󰀪 ", [vim.diagnostic.severity.INFO] = "󰋽 ", [vim.diagnostic.severity.HINT] = "󰌶 " } } or {},
         virtual_text = {
-          severity = vim.diagnostic.severity.WARN, -- Only show virtual text for warnings and errors.
+          severity = vim.diagnostic.severity.WARN,
           source = "if_many",
         },
       })
@@ -133,11 +133,11 @@ require("lazy").setup({
       local capabilities = require("blink.cmp").get_lsp_capabilities()
       local servers = {
         lua_ls = { settings = { Lua = { completion = { callSnippet = "Replace" } } } },
-        rust_analyzer = {},
+        -- REMOVED: rust_analyzer = {}, -- Let rustaceanvim handle this
       }
 
       local ensure_installed = vim.tbl_keys(servers)
-      vim.list_extend(ensure_installed, { "stylua", "rustfmt", "codelldb" })
+      vim.list_extend(ensure_installed, { "stylua" })
       require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
       require("mason-lspconfig").setup({
@@ -153,25 +153,9 @@ require("lazy").setup({
   },
 
   {
-    "simrat39/rust-tools.nvim",
-    ft = "rust",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    opts = function()
-      return {
-        server = {
-          on_attach = function(_, bufnr)
-            vim.keymap.set("n", "<leader>rh", require("rust-tools").hover_actions.hover_actions, { buffer = bufnr, desc = "Rust Hover Actions" })
-            vim.keymap.set("n", "<leader>ra", require("rust-tools").code_action_group.code_action_group, { buffer = bufnr, desc = "Rust Code Actions" })
-            vim.keymap.set("n", "<leader>rr", require("rust-tools").runnables.run, { buffer = bufnr, desc = "Run Runnable" })
-            vim.keymap.set("n", "<leader>rt", require("rust-tools").runnables.test, { buffer = bufnr, desc = "Run Test" })
-          end,
-          settings = { ["rust-analyzer"] = { checkOnSave = { command = "clippy" } } },
-        },
-        dap = {
-          adapter = require("rust-tools.dap").get_codelldb_adapter(vim.fn.stdpath("data") .. "/mason/bin/codelldb", vim.fn.stdpath("data") .. "/mason/packages/codelldb/extension/adapter/codelldb"),
-        },
-      }
-    end,
+    'mrcjkb/rustaceanvim',
+    version = '^6',
+    lazy = false,
   },
 
   {
