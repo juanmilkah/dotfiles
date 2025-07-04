@@ -1,4 +1,7 @@
 set -U fish_greeting
+# fish_config prompt choose minimalist
+fish_config prompt choose simple
+# fish_config prompt choose terlar
 
 if status is-interactive
     # Commands to run in interactive sessions can go here
@@ -21,7 +24,8 @@ alias g='git'
 alias diff='git diff'
 alias gs='git status'
 alias ca='cargo'
-alias ls='ls -lh --color=auto'
+alias ls='ls --color=never'
+alias ll='ls -lh --color=never'
 alias grep='grep --color=auto'
 alias tm='tmux-sessionizer'
 alias open='handlr open'

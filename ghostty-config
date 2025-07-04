@@ -44,14 +44,15 @@
 
 # foreground = 00ff00
 foreground = ffffff
-background = 181818
-# background = 000000
+# background = 181818
+background = 000000
 
 font-family = "IosevkaTermNerdFont"
-font-style = "Regular"
+font-style = "Light"
 font-size = 18
 
 window-decoration = "none"
 window-save-state = "always"
+fullscreen = true
 
 theme = "iTerm2 Dark Background"

@@ -1,3 +1,3 @@
 sudo pacman -Syu
 
-sudo pacman -S --needed fzf ripgrep jq thunar cmatrix tmux feh brightnessctl pavucontrol github-cli unzip htop libreoffice gvfs gvfs-mtp gvfs-gphoto2 udisks2 ranger btop postgresql neovim vim man-pages man-db 
+sudo pacman -S --needed fzf ripgrep jq thunar cmatrix tmux feh brightnessctl pavucontrol github-cli unzip gvfs gvfs-mtp gvfs-gphoto2 udisks2 ranger btop postgresql helix vim man-pages man-db 

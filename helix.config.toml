@@ -1,10 +1,14 @@
 # This is a comment
 theme = "gruber-darker"
+# theme = "ayu_evolve"
 
 [editor]
 line-number = "relative"
+text-width = 80
+true-color = true
+insert-final-newline = true
 mouse = true
-end-of-line-diagnostics = "hint"
+# end-of-line-diagnostics = "hint"
 continue-comments = false
 soft-wrap.enable = true
 
@@ -20,8 +24,8 @@ j = {"k"= "normal_mode"}
 
 [editor.indent-guides]
 render = true
-character = "╎" # Some characters that work well: "▏", "┆", "┊", "⸽"
-skip-levels = 1
+character = "⸽" # Some characters that work well: "▏", "┆", "┊", "⸽"
+# skip-levels = 1
 
 [editor.smart-tab]
 enable = false

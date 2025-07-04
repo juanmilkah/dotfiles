@@ -12,10 +12,7 @@ gh repo list --json nameWithOwner,url -L 1000 | jq -r '.[] | .url' | while read 
     repo_name=$(basename "$repo_url" .git)
     if [ ! -d "$repo_name" ]; then
         echo "Cloning $repo_name..."
-        gh repo clone "$repo_url"
-    else
-        echo "Repository $repo_name already exists, updating..."
-        (cd "$repo_name" && git pull)
+        gh repo clone "$repo_url" -- --depth=1
     fi
 done
 
