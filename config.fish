@@ -1,7 +1,7 @@
 set -U fish_greeting
 # fish_config prompt choose minimalist
-fish_config prompt choose simple
-# fish_config prompt choose terlar
+# fish_config prompt choose simple
+fish_config prompt choose terlar
 
 if status is-interactive
     # Commands to run in interactive sessions can go here

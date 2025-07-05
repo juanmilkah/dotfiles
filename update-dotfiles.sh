@@ -12,5 +12,5 @@ cp ~/.config/tmux/tmux.conf tmux.conf
 cp ~/.config/ghostty/config ghostty-config
 
 cp ~/.bashrc bashrc
-cp ~/.config/fish/config.fish config.fish
+# cp ~/.config/fish/config.fish config.fish
 echo "Done!"
