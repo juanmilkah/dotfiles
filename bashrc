@@ -39,6 +39,6 @@ parse_git_branch() {
  }
 
  # Custom PS1 prompt
- export PS1="\u@\h \w]\$(parse_git_branch)\[\e[0m\]\n\$ "
+ export PS1="\u@\h \w\$(parse_git_branch)\[\e[0m\n\$ "
 
  . "$HOME/.cargo/env"
