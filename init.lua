@@ -1,5 +1,3 @@
--- ~/.config/nvim/init.lua
-
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
@@ -32,6 +30,10 @@ vim.keymap.set("n", "O", "O<Esc>")
 vim.keymap.set("i", "jk", "<Esc>")
 vim.keymap.set("n", "<leader>d", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
+
+vim.api.nvim_set_hl(0, "IblIndent", { fg = "#5c5c5c", nocombine = true }) 
 
 vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight when yanking (copying) text",
@@ -56,7 +58,16 @@ require("lazy").setup({
 	{
 		"lukas-reineke/indent-blankline.nvim",
 		main = "ibl",
-		opts = { scope = { enabled = false }, indent = { char = "·" } },
+		opts = {
+			scope = {
+				enabled = false,
+			},
+			 indent = {
+			 	char = "|",
+				highlight = "IblIndent",
+			}
+			},
+
 	},
 	{
 		"lewis6991/gitsigns.nvim",
@@ -240,13 +251,15 @@ require("lazy").setup({
 	},
 
 	{
-		"thimc/gruber-darker.nvim",
+		"https://codeberg.org/ericrulec/gruber-darker.nvim",
 		config = function()
-			require("gruber-darker").setup({ transparent = true })
 			vim.cmd.colorscheme("gruber-darker")
-		end,
-	},
+		end
+
+	 },
+
 	{ "windwp/nvim-autopairs", event = "InsertEnter", config = true },
+
 	{
 		"folke/todo-comments.nvim",
 		event = "VimEnter",
@@ -279,3 +292,4 @@ require("lazy").setup({
 }, {
 	ui = { icons = vim.g.have_nerd_font and {} or {} },
 })
+
