@@ -81,3 +81,27 @@ language-servers = ["zls"]
 [language-server.zls]
 command = "zls"
 enable_semantic_tokens = true
+
+[[language]]
+name = "go"
+scope = "source.go"
+injection-regex = "go"
+file-types = ["go"]
+roots = ["go.mod", "go.sum"]
+auto-format = true
+language-servers = ["gopls"]
+
+[language-server.gopls]
+command = "gopls"
+enable_semantic_tokens = true
+
+[language-server.superhtml-lsp]
+command = "superhtml"
+args = ["lsp"]
+
+[[language]]
+name = "html"
+scope = "source.html"
+roots = []
+file-types = ["html"]
+language-servers = [ "superhtml-lsp" ]

@@ -47,7 +47,8 @@ foreground = ffffff
 # background = 181818
 background = 000000
 
-font-family = "IosevkaTermNerdFont"
+# font-family = "IosevkaTermNerdFont"
+font-family = "CaskaydiaCoveNerdFont"
 font-style = "Light"
 font-size = 17
 

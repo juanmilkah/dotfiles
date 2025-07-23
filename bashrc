@@ -6,17 +6,23 @@
 [[ $- != *i* ]] && return
 
 # Set environment variables
-export EDITOR=vim
+export EDITOR=helix
 export TERM=screen-256color
 export LANG='en_US.UTF-8'
 
 # Add directories to PATH
 export PATH="$PATH:$HOME/dotfiles"
 export PATH="$PATH:$HOME/.local/bin"
+export PATH="$PATH:$HOME/.zig"
 
 # Aliases
+alias ..='cd ../'
+alias new='todo new'
+alias get='todo get'
+alias list='todo list'
 alias x='exit'
 alias c='clear'
+alias cd='z'
 alias g='git'
 alias diff='git diff'
 alias gs='git status'
@@ -31,6 +37,7 @@ alias update='sudo pacman -Syu'
 alias remove='sudo pacman -Rnsc'
 alias unused='sudo pacman -Qtdq'
 alias grep='grep --color=auto'
+alias vim='helix'
 
 # PS1='[\u@\h \W]\$ '
 parse_git_branch() {
@@ -41,3 +48,10 @@ parse_git_branch() {
  export PS1="\u@\h \w\$(parse_git_branch)\[\e[0m\n\$ "
 
  . "$HOME/.cargo/env"
+
+eval "$(zoxide init bash)"
+
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

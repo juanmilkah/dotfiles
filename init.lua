@@ -30,10 +30,13 @@ vim.keymap.set("n", "O", "O<Esc>")
 vim.keymap.set("i", "jk", "<Esc>")
 vim.keymap.set("n", "<leader>d", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
+vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
+vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
+-- Keep visual selection after shifting left or right
+vim.keymap.set("v", "<", "<gv", { noremap = true, silent = true })
+vim.keymap.set("v", ">", ">gv", { noremap = true, silent = true })
 
-vim.api.nvim_set_hl(0, "IblIndent", { fg = "#5c5c5c", nocombine = true }) 
+vim.api.nvim_set_hl(0, "IblIndent", { fg = "#5c5c5c", nocombine = true })
 
 vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight when yanking (copying) text",
@@ -42,6 +45,11 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 		vim.hl.on_yank()
 	end,
 })
+
+vim.keymap.set("n", "gk", function()
+	local new_config = not vim.diagnostic.config().virtual_lines
+	vim.diagnostic.config({ virtual_lines = new_config })
+end, { desc = "Toggle diagnostic virtual_lines" })
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -62,12 +70,11 @@ require("lazy").setup({
 			scope = {
 				enabled = false,
 			},
-			 indent = {
-			 	char = "|",
+			indent = {
+				char = "|",
 				highlight = "IblIndent",
-			}
 			},
-
+		},
 	},
 	{
 		"lewis6991/gitsigns.nvim",
@@ -81,6 +88,9 @@ require("lazy").setup({
 			},
 		},
 	},
+
+	{ 'wakatime/vim-wakatime', lazy = false },
+	
 	{
 		"folke/which-key.nvim",
 		event = "VimEnter",
@@ -123,7 +133,7 @@ require("lazy").setup({
 			pcall(telescope.load_extension, "ui-select")
 			vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "[F]ind [H]elp" })
 			vim.keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "[F]ind [K]eymaps" })
-			vim.keymap.set("n", "<leader>;", builtin.find_files, { desc = "[F]ind [F]iles" })
+			vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "[F]ind [F]iles" })
 			vim.keymap.set("n", "<leader>fs", builtin.builtin, { desc = "[F]ind [S]elect Telescope" })
 			vim.keymap.set("n", "<leader>fw", builtin.grep_string, { desc = "[F]ind current [W]ord" })
 			vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "[F]ind by [G]rep" })
@@ -156,8 +166,8 @@ require("lazy").setup({
 					local map = function(keys, func, desc, mode)
 						vim.keymap.set(mode or "n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
 					end
-					map("gn", vim.lsp.buf.rename, "[R]e[n]ame")
-					map("ga", vim.lsp.buf.code_action, "[G]oto Code [A]ction", { "n", "x" })
+					map("<leader>r", vim.lsp.buf.rename, "[R]e[n]ame")
+					map("<leader>a", vim.lsp.buf.code_action, "[G]oto Code [A]ction", { "n", "x" })
 					map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
 					map("gi", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
 					map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
@@ -184,6 +194,8 @@ require("lazy").setup({
 					severity = vim.diagnostic.severity.WARN,
 					source = "if_many",
 				},
+
+				-- virtual_lines = false,
 			})
 
 			local capabilities = require("blink.cmp").get_lsp_capabilities()
@@ -254,9 +266,8 @@ require("lazy").setup({
 		"https://codeberg.org/ericrulec/gruber-darker.nvim",
 		config = function()
 			vim.cmd.colorscheme("gruber-darker")
-		end
-
-	 },
+		end,
+	},
 
 	{ "windwp/nvim-autopairs", event = "InsertEnter", config = true },
 
@@ -292,4 +303,3 @@ require("lazy").setup({
 }, {
 	ui = { icons = vim.g.have_nerd_font and {} or {} },
 })
-
