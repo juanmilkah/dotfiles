@@ -5,13 +5,13 @@ vim.g.have_nerd_font = true
 vim.o.number = true
 vim.o.relativenumber = true
 vim.o.mouse = "a"
-vim.o.showmode = false
+vim.o.showmode = true
 vim.o.breakindent = true
 vim.o.undofile = true
 vim.o.ignorecase = true
 vim.o.expandtab = true
-vim.o.shiftwidth = 2
-vim.o.softtabstop = 2
+vim.o.shiftwidth = 4
+vim.o.softtabstop = 4
 vim.o.smartcase = true
 vim.o.signcolumn = "yes"
 vim.o.updatetime = 250
@@ -19,20 +19,20 @@ vim.o.timeoutlen = 300
 vim.o.splitright = true
 vim.o.splitbelow = true
 vim.o.list = true
-vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
+-- trail = "·",
+vim.opt.listchars = { tab = "» ", nbsp = "␣" }
 vim.o.inccommand = "split"
 vim.o.scrolloff = 5
 vim.o.confirm = true
+vim.opt.colorcolumn = "80,100"
 
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 vim.keymap.set("n", "o", "o<Esc>")
 vim.keymap.set("n", "O", "O<Esc>")
 vim.keymap.set("i", "jk", "<Esc>")
 vim.keymap.set("n", "<leader>d", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
-vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
--- Keep visual selection after shifting left or right
 vim.keymap.set("v", "<", "<gv", { noremap = true, silent = true })
 vim.keymap.set("v", ">", ">gv", { noremap = true, silent = true })
 
@@ -45,11 +45,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 		vim.hl.on_yank()
 	end,
 })
-
-vim.keymap.set("n", "gk", function()
-	local new_config = not vim.diagnostic.config().virtual_lines
-	vim.diagnostic.config({ virtual_lines = new_config })
-end, { desc = "Toggle diagnostic virtual_lines" })
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -89,8 +84,18 @@ require("lazy").setup({
 		},
 	},
 
-	{ 'wakatime/vim-wakatime', lazy = false },
-	
+	{ "wakatime/vim-wakatime", lazy = false },
+
+	{
+		"nvim-tree/nvim-tree.lua",
+		cmd = { "NvimTreeToggle", "NvimTreeOpen" },
+		keys = {
+			{ "<leader>e", "<cmd>NvimTreeToggle<cr>", desc = "Toggle file explorer" },
+		},
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		opts = {},
+	},
+
 	{
 		"folke/which-key.nvim",
 		event = "VimEnter",
@@ -112,40 +117,21 @@ require("lazy").setup({
 
 	{
 		"nvim-telescope/telescope.nvim",
-		event = "VimEnter",
+		cmd = "Telescope",
+		keys = {
+			{ "<leader>ff", "<cmd>Telescope find_files<cr>" },
+			{ "<leader>fg", "<cmd>Telescope live_grep<cr>" },
+			{ "<leader>fb", "<cmd>Telescope buffers<cr>" },
+			{ "<leader>fh", "<cmd>Telescope help_tags<cr>" },
+		},
 		dependencies = {
 			"nvim-lua/plenary.nvim",
-			{
-				"nvim-telescope/telescope-fzf-native.nvim",
-				build = "make",
-				cond = function()
-					return vim.fn.executable("make") == 1
-				end,
-			},
-			{ "nvim-telescope/telescope-ui-select.nvim" },
-			{ "nvim-tree/nvim-web-devicons", enabled = vim.g.have_nerd_font },
+			{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 		},
 		config = function()
 			local telescope = require("telescope")
-			local builtin = require("telescope.builtin")
-			telescope.setup({ extensions = { ["ui-select"] = { require("telescope.themes").get_dropdown() } } })
+			telescope.setup({})
 			pcall(telescope.load_extension, "fzf")
-			pcall(telescope.load_extension, "ui-select")
-			vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "[F]ind [H]elp" })
-			vim.keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "[F]ind [K]eymaps" })
-			vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "[F]ind [F]iles" })
-			vim.keymap.set("n", "<leader>fs", builtin.builtin, { desc = "[F]ind [S]elect Telescope" })
-			vim.keymap.set("n", "<leader>fw", builtin.grep_string, { desc = "[F]ind current [W]ord" })
-			vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "[F]ind by [G]rep" })
-			vim.keymap.set("n", "<leader>fd", builtin.diagnostics, { desc = "[F]ind [D]iagnostics" })
-			vim.keymap.set("n", "<leader>fr", builtin.resume, { desc = "[F]ind [R]esume" })
-			vim.keymap.set("n", "<leader>f.", builtin.oldfiles, { desc = '[F]ind Recent Files ("." for repeat)' })
-			vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
-			vim.keymap.set("n", "<leader>/", function()
-				builtin.current_buffer_fuzzy_find(
-					require("telescope.themes").get_dropdown({ winblend = 10, previewer = false })
-				)
-			end, { desc = "[/] Fuzzily search in current buffer" })
 		end,
 	},
 
@@ -160,21 +146,16 @@ require("lazy").setup({
 			"mfussenegger/nvim-dap",
 		},
 		config = function()
+			-- LSP keymaps
 			vim.api.nvim_create_autocmd("LspAttach", {
-				group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
 				callback = function(event)
-					local map = function(keys, func, desc, mode)
-						vim.keymap.set(mode or "n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
+					local map = function(keys, func, desc)
+						vim.keymap.set("n", keys, func, { buffer = event.buf, desc = desc })
 					end
-					map("<leader>r", vim.lsp.buf.rename, "[R]e[n]ame")
-					map("<leader>a", vim.lsp.buf.code_action, "[G]oto Code [A]ction", { "n", "x" })
-					map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
-					map("gi", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
-					map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
-					map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
-					map("gO", require("telescope.builtin").lsp_document_symbols, "Open Document Symbols")
-					map("gW", require("telescope.builtin").lsp_dynamic_workspace_symbols, "Open Workspace Symbols")
-					map("gt", require("telescope.builtin").lsp_type_definitions, "[G]oto [T]ype Definition")
+					map("gd", vim.lsp.buf.definition, "Go to definition")
+					map("gr", vim.lsp.buf.references, "Go to references")
+					map("<leader>r", vim.lsp.buf.rename, "Rename")
+					map("<leader>a", vim.lsp.buf.code_action, "Code action")
 				end,
 			})
 
@@ -191,11 +172,13 @@ require("lazy").setup({
 					},
 				} or {},
 				virtual_text = {
-					severity = vim.diagnostic.severity.WARN,
+					-- severity = vim.diagnostic.severity.WARN,
 					source = "if_many",
+					current_line = true,
+					virt_text_pos = "eol_right_align",
 				},
 
-				-- virtual_lines = false,
+				-- virtual_lines = true,
 			})
 
 			local capabilities = require("blink.cmp").get_lsp_capabilities()
@@ -224,6 +207,7 @@ require("lazy").setup({
 		"mrcjkb/rustaceanvim",
 		version = "^6",
 		lazy = false,
+		fmt = { "rust" },
 	},
 
 	{
@@ -231,33 +215,25 @@ require("lazy").setup({
 		event = { "BufWritePre" },
 		cmd = { "ConformInfo" },
 		opts = {
-			notify_on_error = false,
+			notify_on_error = true,
 			format_on_save = { timeout_ms = 500, lsp_format = "fallback" },
 			formatters_by_ft = {
 				lua = { "stylua" },
 				rust = { "rustfmt" },
+				json = { "json-lsp" },
+				go = { "gopls" },
 			},
 		},
 	},
 
 	{
 		"saghen/blink.cmp",
-		event = "VimEnter",
+		event = "InsertEnter",
 		version = "1.*",
-		dependencies = {
-			{ "L3MON4D3/LuaSnip", version = "2.*", build = "make install_jsregexp" },
-			"folke/lazydev.nvim",
-		},
 		opts = {
 			keymap = { preset = "super-tab" },
-			appearance = { nerd_font_variant = "normal" },
-			completion = { documentation = { auto_show = true, auto_show_delay_ms = 500 } },
-			sources = {
-				default = { "lsp", "path", "snippets", "lazydev" },
-				providers = { lazydev = { module = "lazydev.integrations.blink", score_offset = 100 } },
-			},
-			snippets = { preset = "luasnip" },
-			fuzzy = { implementation = "prefer_rust_with_warning" },
+			sources = { default = { "lsp", "path", "snippets" } },
+			completion = { documentation = { auto_show = true } },
 			signature = { enabled = true },
 		},
 	},
@@ -278,18 +254,6 @@ require("lazy").setup({
 		opts = { signs = false },
 	},
 	{
-		"echasnovski/mini.nvim",
-		config = function()
-			require("mini.ai").setup({ n_lines = 500 })
-			require("mini.surround").setup()
-			local sl = require("mini.statusline")
-			sl.setup({ use_icons = vim.g.have_nerd_font })
-			sl.section_location = function()
-				return "%2l:%-2v"
-			end
-		end,
-	},
-	{
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
 		main = "nvim-treesitter.configs",
@@ -302,4 +266,20 @@ require("lazy").setup({
 	},
 }, {
 	ui = { icons = vim.g.have_nerd_font and {} or {} },
+	performance = {
+		cache = { enabled = true },
+		reset_packpath = true,
+		rtp = {
+			disabled_plugins = {
+				"gzip",
+				"matchit",
+				"matchparen",
+				"netrwPlugin",
+				"tarPlugin",
+				"tohtml",
+				"tutor",
+				"zipPlugin",
+			},
+		},
+	},
 })

@@ -6,8 +6,9 @@
 [[ $- != *i* ]] && return
 
 # Set environment variables
-export EDITOR=helix
-export TERM=screen-256color
+export EDITOR=nvim
+# export TERM=screen-256color
+export TERM=xterm-kitty
 export LANG='en_US.UTF-8'
 
 # Add directories to PATH
@@ -37,7 +38,7 @@ alias update='sudo pacman -Syu'
 alias remove='sudo pacman -Rnsc'
 alias unused='sudo pacman -Qtdq'
 alias grep='grep --color=auto'
-alias vim='helix'
+alias vim='nvim'
 
 # PS1='[\u@\h \W]\$ '
 parse_git_branch() {
