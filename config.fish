@@ -1,16 +1,16 @@
 set -U fish_greeting
 # fish_config prompt choose minimalist
 # fish_config prompt choose simple
-fish_config prompt choose terlar
+# fish_config prompt choose terlar
 
 if status is-interactive
     # Commands to run in interactive sessions can go here
 end
 
-fish_config theme choose None
+# fish_config theme choose None
 
-set -x EDITOR helix
-set -x TERM screen-256color
+set -x EDITOR nvim
+set -x TERM xterm-kitty
 set -x LANG 'en_US.UTF-8'
 
 set PATH $PATH ~/dotfiles
@@ -23,7 +23,7 @@ alias c='clear'
 alias g='git'
 alias diff='git diff'
 alias gs='git status'
-alias ca='cargo'
+alias cg='cargo'
 alias ls='ls --color=never'
 alias ll='ls -lh --color=never'
 alias grep='grep --color=auto'
@@ -33,5 +33,4 @@ alias install='sudo pacman -S --needed'
 alias update='sudo pacman -Syu'
 alias remove='sudo pacman -Rnsc'
 alias unused='sudo pacman -Qtdq'
-alias vim='helix'
-alias copy='xclip -sel clip'
+alias vim='nvim'
