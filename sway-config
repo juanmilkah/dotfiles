@@ -85,6 +85,7 @@ output * bg /home/juan/anime-girl-space.jpg fill
 
     # Reload the configuration file
     bindsym $mod+Shift+c reload
+    bindsym $mod+Shift+z exec swaylock -e -f -c 000000
 
     # Exit sway (logs you out of your Wayland session)
     bindsym $mod+Shift+e exec swaymsg exit 
@@ -214,7 +215,7 @@ bindsym $mod+r mode "resize"
     bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
     # Special key to take a screenshot with grim
     bindsym Print exec grim
-    bindsym $mod+Print exec grim -g "$(slurp)" "$HOME/Pictures/screenshots/$(date +'%Y-%M-%D_%H-%M-%S').png" 
+    bindsym $mod+Print exec grim -g "$(slurp)" ~/Pictures/screenshots/$(date +'%Y-%m-%d_%H-%M-%S.png')
 
 #
 # Status Bar:
@@ -228,7 +229,8 @@ bar {
     # The default just shows the current date and time.
     # status_command while date +'%Y-%m-%d %X'; do sleep 1; done
     status_command i3status
-
+    # status_command gBar bar 0
+    
     colors {
         statusline #ffffff
         background #323232

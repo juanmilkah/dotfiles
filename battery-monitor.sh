@@ -6,6 +6,6 @@ while true; do
 
   echo $AVG > ~/battery/capacity;
 
-  sleep 3;
+  sleep 10;
   
 done
