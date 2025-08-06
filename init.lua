@@ -14,48 +14,44 @@ vim.o.shiftwidth = 4
 vim.o.softtabstop = 4
 vim.o.smartcase = true
 vim.o.signcolumn = "yes"
-vim.o.updatetime = 250
+vim.o.updatetime = 100
 vim.o.timeoutlen = 300
 vim.o.splitright = true
 vim.o.splitbelow = true
 vim.o.list = true
--- trail = "·",
 vim.opt.listchars = { tab = "» ", nbsp = "␣" }
 vim.o.inccommand = "split"
 vim.o.scrolloff = 5
 vim.o.confirm = true
 vim.opt.colorcolumn = "80,100"
 
+-- Speed optimizations
+vim.o.lazyredraw = true
+vim.o.ttyfast = true
+vim.o.synmaxcol = 300
+
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 vim.keymap.set("n", "o", "o<Esc>")
 vim.keymap.set("n", "O", "O<Esc>")
 vim.keymap.set("i", "jk", "<Esc>")
-vim.keymap.set("n", "<leader>d", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
+vim.keymap.set("n", "<leader>d", vim.diagnostic.setloclist, { desc = "Open diagnostic list" })
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
 vim.keymap.set("v", "<", "<gv", { noremap = true, silent = true })
 vim.keymap.set("v", ">", ">gv", { noremap = true, silent = true })
 
+-- LSP restart keymap
+vim.keymap.set("n", "<leader>lr", "<cmd>LspRestart<CR>", { desc = "Restart LSP" })
+
 vim.api.nvim_set_hl(0, "IblIndent", { fg = "#5c5c5c", nocombine = true })
 
 vim.api.nvim_create_autocmd("TextYankPost", {
-    desc = "Highlight when yanking (copying) text",
-    group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
+    desc = "Highlight when yanking text",
+    group = vim.api.nvim_create_augroup("highlight-yank", { clear = true }),
     callback = function()
-        vim.hl.on_yank()
+        vim.hl.on_yank({ timeout = 200 })
     end,
 })
-
-vim.api.nvim_create_autocmd("CursorHold", {
-    callback = function()
-        vim.diagnostic.open_float(nil, { focus = false, border = "rounded" })
-    end,
-})
-
-vim.keymap.set("n", "<leader>t", function()
-    _G.show_diagnostics_hover = not _G.show_diagnostics_hover
-    vim.notify("Diagnostic hover " .. (_G.show_diagnostics_hover and "enabled" or "disabled"))
-end, { desc = "Toggle diagnostic hover on hold" })
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -72,10 +68,9 @@ require("lazy").setup({
     {
         "lukas-reineke/indent-blankline.nvim",
         main = "ibl",
+        event = "BufReadPost",
         opts = {
-            scope = {
-                enabled = false,
-            },
+            scope = { enabled = false },
             indent = {
                 char = "|",
                 highlight = "IblIndent",
@@ -84,6 +79,7 @@ require("lazy").setup({
     },
     {
         "lewis6991/gitsigns.nvim",
+        event = "BufReadPre",
         opts = {
             signs = {
                 add = { text = "+" },
@@ -92,6 +88,7 @@ require("lazy").setup({
                 topdelete = { text = "‾" },
                 changedelete = { text = "~" },
             },
+            update_debounce = 50,
         },
     },
 
@@ -104,40 +101,43 @@ require("lazy").setup({
             { "<leader>e", "<cmd>NvimTreeToggle<cr>", desc = "Toggle file explorer" },
         },
         dependencies = { "nvim-tree/nvim-web-devicons" },
-        opts = {},
+        opts = {
+            git = { timeout = 400 },
+        },
     },
 
     {
         "folke/which-key.nvim",
-        event = "VimEnter",
+        event = "VeryLazy",
         opts = {
             delay = 0,
             icons = { mappings = vim.g.have_nerd_font, keys = vim.g.have_nerd_font and {} or {} },
             spec = {
                 { "<leader>f", group = "[F]ind" },
-                { "<leader>t", group = "[T]oggle" },
+                { "<leader>l", group = "[L]SP" },
                 { "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
             },
         },
     },
 
     {
-        "mason-org/mason.nvim",
+        "williamboman/mason.nvim",
+        cmd = "Mason",
         opts = {},
     },
 
     {
         "nvim-lualine/lualine.nvim",
+        event = "VeryLazy",
         config = function()
             require("lualine").setup({
+                options = { refresh = { statusline = 100 } },
                 sections = {
                     lualine_b = {
                         "branch", "diff",
                         { "diagnostics", sources = { "nvim_diagnostic" } },
                     },
-                    lualine_c = {
-                        "filename",
-                    }
+                    lualine_c = { "filename" },
                 },
             })
         end,
@@ -147,10 +147,10 @@ require("lazy").setup({
         "nvim-telescope/telescope.nvim",
         cmd = "Telescope",
         keys = {
-            { "<leader>ff", "<cmd>Telescope find_files<cr>" },
-            { "<leader>fg", "<cmd>Telescope live_grep<cr>" },
-            { "<leader>fb", "<cmd>Telescope buffers<cr>" },
-            { "<leader>fh", "<cmd>Telescope help_tags<cr>" },
+            { "<leader>f", "<cmd>Telescope find_files<cr>" },
+            { "<leader>g", "<cmd>Telescope live_grep<cr>" },
+            { "<leader>b", "<cmd>Telescope buffers<cr>" },
+            { "<leader>h", "<cmd>Telescope help_tags<cr>" },
         },
         dependencies = {
             "nvim-lua/plenary.nvim",
@@ -158,22 +158,44 @@ require("lazy").setup({
         },
         config = function()
             local telescope = require("telescope")
-            telescope.setup({})
+            telescope.setup({
+                defaults = {
+                    file_ignore_patterns = { "%.git/", "node_modules/", "target/" },
+                },
+            })
             pcall(telescope.load_extension, "fzf")
         end,
     },
 
     {
         "neovim/nvim-lspconfig",
+        event = { "BufReadPre", "BufNewFile" },
         dependencies = {
-            "mason-org/mason.nvim",
-            "mason-org/mason-lspconfig.nvim",
+            "williamboman/mason.nvim",
+            "williamboman/mason-lspconfig.nvim",
             "WhoIsSethDaniel/mason-tool-installer.nvim",
             { "j-hui/fidget.nvim", opts = {} },
             "saghen/blink.cmp",
-            "mfussenegger/nvim-dap",
         },
         config = function()
+            -- Improved diagnostics config
+            vim.diagnostic.config({
+                virtual_text = {
+                    source = "if_many",
+                    prefix = "●",
+                    severity_sort = true,
+                },
+                float = {
+                    border = "rounded",
+                    source = "if_many",
+                    focusable = false,
+                },
+                signs = true,
+                underline = true,
+                update_in_insert = false,
+                severity_sort = true,
+            })
+
             -- LSP keymaps
             vim.api.nvim_create_autocmd("LspAttach", {
                 callback = function(event)
@@ -184,39 +206,33 @@ require("lazy").setup({
                     map("gr", vim.lsp.buf.references, "Go to references")
                     map("<leader>r", vim.lsp.buf.rename, "Rename")
                     map("<leader>a", vim.lsp.buf.code_action, "Code action")
+                    map("K", vim.lsp.buf.hover, "Hover documentation")
+                    map("<C-k>", vim.lsp.buf.signature_help, "Signature help")
                 end,
             })
 
-            vim.diagnostic.config({
-                severity_sort = true,
-                float = { border = "rounded", source = "if_many" },
-                underline = { severity = vim.diagnostic.severity.ERROR },
-                signs = vim.g.have_nerd_font and {
-                    text = {
-                        [vim.diagnostic.severity.ERROR] = "󰅚 ",
-                        [vim.diagnostic.severity.WARN] = "󰀪 ",
-                        [vim.diagnostic.severity.INFO] = "󰋽 ",
-                        [vim.diagnostic.severity.HINT] = "󰌶 ",
-                    },
-                } or {},
-                -- virtual_text = {
-                --     -- severity = vim.diagnostic.severity.WARN,
-                --     source = "if_many",
-                --     current_line = true,
-                --     -- virt_text_pos = "eol_right_align",
-                -- },
-
-                -- virtual_lines = true,
-            })
-
             local capabilities = require("blink.cmp").get_lsp_capabilities()
+
+            -- Enhanced capabilities for better performance
+            capabilities.textDocument.completion.completionItem = {
+                snippetSupport = true,
+                resolveSupport = {
+                    properties = { "documentation", "detail", "additionalTextEdits" }
+                }
+            }
+
             local servers = {
-                zls = {},
-                lua_ls = { settings = { Lua = { completion = { callSnippet = "Replace" } } } },
+                lua_ls = {
+                    settings = {
+                        Lua = {
+                            completion = { callSnippet = "Replace" },
+                            diagnostics = { globals = { "vim" } }
+                        }
+                    }
+                },
             }
 
             local ensure_installed = vim.tbl_keys(servers)
-            vim.list_extend(ensure_installed, {})
             require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
             require("mason-lspconfig").setup({
@@ -235,7 +251,27 @@ require("lazy").setup({
         "mrcjkb/rustaceanvim",
         version = "^6",
         lazy = false,
-        fmt = { "rust" },
+        ft = { "rust" },
+        config = function()
+            vim.g.rustaceanvim = {
+                server = {
+                    capabilities = require("blink.cmp").get_lsp_capabilities(),
+                    settings = {
+                        ["rust-analyzer"] = {
+                            checkOnSave = true,
+                            cargo = {
+                                buildScripts = { enable = true },
+                            },
+                            procMacro = { enable = true },
+                            diagnostics = {
+                                enable = true,
+                                experimental = { enable = false }
+                            },
+                        },
+                    },
+                },
+            }
+        end,
     },
 
     {
@@ -243,13 +279,11 @@ require("lazy").setup({
         event = { "BufWritePre" },
         cmd = { "ConformInfo" },
         opts = {
-            notify_on_error = true,
-            format_on_save = { timeout_ms = 500, lsp_format = "fallback" },
+            notify_on_error = false,
+            format_on_save = { timeout_ms = 1000, lsp_format = "fallback" },
             formatters_by_ft = {
                 lua = { "stylua" },
-                rust = { "rustfmt" },
-                json = { "json-lsp" },
-                go = { "gopls" },
+                json = { "prettier" },
             },
         },
     },
@@ -260,36 +294,61 @@ require("lazy").setup({
         version = "1.*",
         opts = {
             keymap = { preset = "super-tab" },
-            sources = { default = { "lsp", "path", "snippets" } },
-            completion = { documentation = { auto_show = true } },
+            sources = {
+                default = { "lsp", "path", "snippets" },
+                providers = {
+                    lsp = { timeout_ms = 500 }
+                }
+            },
+            completion = {
+                documentation = { auto_show = true, auto_show_delay_ms = 200 },
+                menu = { draw = { treesitter = { "lsp" } } }
+            },
             signature = { enabled = true },
         },
     },
 
     {
         "https://codeberg.org/ericrulec/gruber-darker.nvim",
+        lazy = false,
+        priority = 1000,
         config = function()
             vim.cmd.colorscheme("gruber-darker")
         end,
     },
 
-    { "windwp/nvim-autopairs", event = "InsertEnter", config = true },
+    {
+        "windwp/nvim-autopairs",
+        event = "InsertEnter",
+        config = true
+    },
 
     {
         "folke/todo-comments.nvim",
-        event = "VimEnter",
+        event = { "BufReadPost", "BufNewFile" },
         dependencies = { "nvim-lua/plenary.nvim" },
         opts = { signs = false },
     },
+
     {
         "nvim-treesitter/nvim-treesitter",
+        event = { "BufReadPost", "BufNewFile" },
         build = ":TSUpdate",
         main = "nvim-treesitter.configs",
         opts = {
-            ensure_installed = {},
+            ensure_installed = { "lua", "rust", "json" },
             auto_install = true,
-            highlight = { enable = true, additional_vim_regex_highlighting = { "ruby" } },
-            indent = { enable = true, disable = { "ruby" } },
+            highlight = {
+                enable = true,
+                disable = function(lang, buf)
+                    local max_filesize = 100 * 1024 -- 100 KB
+                    local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+                    if ok and stats and stats.size > max_filesize then
+                        return true
+                    end
+                end,
+            },
+            indent = { enable = true },
         },
     },
 }, {
@@ -310,4 +369,5 @@ require("lazy").setup({
             },
         },
     },
+    checker = { enabled = false },
 })
