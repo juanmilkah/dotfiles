@@ -15,10 +15,13 @@ gvfs-mtp \
 gvfs-gphoto2 \
 ranger \
 btop \
-postgresql \
 vim \
 man-pages \
 man-db \
 neovim \
 i3status \
-i3blocks 
+i3blocks \
+bat \
+tokei \
+vi \
+neofetch
