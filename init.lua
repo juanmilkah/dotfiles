@@ -230,6 +230,9 @@ require("lazy").setup({
                             }
                         }
                     },
+                    zls = {
+                        path = "/home/juan/.zls",
+                    }
                 }
 
                 local ensure_installed = vim.tbl_keys(servers)
@@ -287,6 +290,7 @@ require("lazy").setup({
                     json = { "prettier" },
                     c = { "clangd" },
                     go = { "gopls" },
+                    zig = { "zls"},
                 },
             },
         },

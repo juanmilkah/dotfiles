@@ -131,7 +131,7 @@ plugins=(
 #
 #OMB_TERM_USE_TPUT=no
 
-source "$OSH"/oh-my-bash.sh
+# source "$OSH"/oh-my-bash.sh
 
 # User configuration
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -177,6 +177,7 @@ export LANG='en_US.UTF-8'
 export PATH="$PATH:$HOME/dotfiles"
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/.zig"
+export PATH="$PATH:$HOME/.zls"
 
 # Aliases
 alias ..='cd ../'
