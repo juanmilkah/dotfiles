@@ -24,4 +24,6 @@ i3blocks \
 bat \
 tokei \
 vi \
-fastfetch
+fastfetch \
+helix \
+mako
