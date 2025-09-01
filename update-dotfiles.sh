@@ -1,9 +1,8 @@
 #! /bin/bash
-set -e
 
-# cp ~/.config/helix/config.toml helix.config.toml
-# cp ~/.config/helix/languages.toml languages.toml
-cp ~/.config/nvim/init.lua init.lua
+cp ~/.config/helix/config.toml helix.config.toml
+cp ~/.config/helix/languages.toml languages.toml
+# cp ~/.config/nvim/init.lua init.lua
 # cp ~/.vimrc vimrc
 
 cp ~/.config/sway/config sway-config
@@ -13,9 +12,10 @@ cp ~/.config/sway/config sway-config
 cp ~/.config/tmux/tmux.conf tmux.conf
 
 # cp ~/.config/ghostty/config ghostty-config
-cp ~/.config/kitty/kitty.conf kitty.conf
+# cp ~/.config/kitty/kitty.conf kitty.conf
+cp ~/.config/alacritty/alacritty.toml alacritty.toml
 
 cp ~/.bashrc bashrc
-cp ~/.config/fish/config.fish config.fish
+# cp ~/.config/fish/config.fish config.fish
 
 echo "Done!"

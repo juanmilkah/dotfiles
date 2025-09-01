@@ -1,0 +1,6 @@
+[general]
+import = ["~/.config/alacritty/themes/terminal_app.toml"]
+
+[font]
+normal = {family = "IosevkaTermSlabNerdFont", style = "Light"}
+size = 17.0

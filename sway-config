@@ -29,7 +29,7 @@ exec gammastep -O 4000
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg /home/juan/anime-girls.jpg fill
+output * bg /home/juan/Downloads/anime-girl-girly-1920x1080-9792-4052954925.jpg fill
 #
 # Example configuration:
 #
@@ -238,8 +238,8 @@ bar {
     # status_command gBar bar 0
     
     colors {
-        statusline #ffffff
-        background #323232
+        statusline #00ff00
+        background #000000
         inactive_workspace #32323200 #32323200 #5c5c5c
     }
 }
