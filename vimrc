@@ -17,6 +17,12 @@ set laststatus=2
 set signcolumn=no
 set noshowmatch
 
+set textwidth=80
+set formatoptions+=t   " auto-wrap text when typing (textwidth)
+set wrap               " visual wrapping for long lines
+set linebreak          " break at word boundaries when displaying wrapped lines
+set nolist             " avoid showing tabs/ends that confuse wrapping
+
 " Indentation
 set tabstop=2
 set shiftwidth=2
