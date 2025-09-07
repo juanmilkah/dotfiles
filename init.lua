@@ -64,7 +64,6 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-                -- "NMAC427/guess-indent.nvim",
                 {
                         "lukas-reineke/indent-blankline.nvim",
                         main = "ibl",
@@ -72,7 +71,8 @@ require("lazy").setup({
                         opts = {
                                 scope = { enabled = false },
                                 indent = {
-                                        char = "|",
+                                        -- char = "|",
+                                        char = ".",
                                         highlight = "IblIndent",
                                 },
                         },
@@ -178,7 +178,6 @@ require("lazy").setup({
                                 "saghen/blink.cmp",
                         },
                         config = function()
-                                -- Improved diagnostics config
                                 vim.diagnostic.config({
                                         virtual_text = {
                                                 source = "if_many",
@@ -188,7 +187,7 @@ require("lazy").setup({
                                         float = {
                                                 border = "rounded",
                                                 source = "if_many",
-                                                focusable = false,
+                                                focusable = true,
                                         },
                                         signs = true,
                                         underline = true,
@@ -203,6 +202,7 @@ require("lazy").setup({
                                                         vim.keymap.set("n", keys, func,
                                                                 { buffer = event.buf, desc = desc })
                                                 end
+                                                map("gD", vim.lsp.buf.declaration, "Go to Declaration")
                                                 map("gd", vim.lsp.buf.definition, "Go to definition")
                                                 map("gr", vim.lsp.buf.references, "Go to references")
                                                 map("<leader>r", vim.lsp.buf.rename, "Rename")
@@ -271,7 +271,7 @@ require("lazy").setup({
                                                                 procMacro = { enable = true },
                                                                 diagnostics = {
                                                                         enable = true,
-                                                                        experimental = { enable = false }
+                                                                        experimental = { enable = true }
                                                                 },
                                                         },
                                                 },

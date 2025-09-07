@@ -17,6 +17,7 @@ set laststatus=2
 set noshowmatch
 
 set textwidth=80
+set cc=+1
 set formatoptions+=t   " auto-wrap text when typing (textwidth)
 set wrap               " visual wrapping for long lines
 set linebreak          " break at word boundaries when displaying wrapped lines
@@ -43,6 +44,7 @@ set nowritebackup
 set autoread
 filetype plugin indent on
 syntax on
+set dir=~/dev/tmp
 
 " Performance
 set updatetime=100
@@ -138,7 +140,7 @@ nmap <silent> K  <plug>(lsp-hover)
 nmap <silent> [d  <plug>(lsp-previous-diagnostic)
 nmap <silent> ]d  <plug>(lsp-next-diagnostic)
 " Formatting the document
-nnoremap <leader>ff :LspDocumentFormat<CR>
+nnoremap <leader>ff :LspDocumentFormatSync<CR>
 
 " asyncomplete mappings (completion)
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
