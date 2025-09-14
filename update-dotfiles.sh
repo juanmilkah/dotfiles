@@ -14,6 +14,7 @@ cp ~/.config/tmux/tmux.conf tmux.conf
 # cp ~/.config/ghostty/config ghostty-config
 # cp ~/.config/kitty/kitty.conf kitty.conf
 cp ~/.config/alacritty/alacritty.toml alacritty.toml
+cp ~/.config/alacritty/themes/terminal_app.toml terminal_app.toml
 
 cp ~/.bashrc bashrc
 # cp ~/.config/fish/config.fish config.fish

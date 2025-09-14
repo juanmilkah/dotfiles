@@ -229,11 +229,12 @@ require("lazy").setup({
                                                                 completion = { callSnippet = "Replace" },
                                                                 diagnostics = { globals = { "vim" } }
                                                         }
-                                                }
+                                                },
+                                                path = "home/juan/.lua_ls",
                                         },
-                                        zls = {
-                                                path = "/home/juan/.zls",
-                                        }
+                                        -- zls = {
+                                        --         path = "/home/juan/.zls",
+                                        -- }
                                 }
 
                                 local ensure_installed = vim.tbl_keys(servers)
@@ -271,7 +272,7 @@ require("lazy").setup({
                                                                 procMacro = { enable = true },
                                                                 diagnostics = {
                                                                         enable = true,
-                                                                        experimental = { enable = true }
+                                                                        experimental = { enable = false }
                                                                 },
                                                         },
                                                 },
@@ -292,6 +293,7 @@ require("lazy").setup({
                                         json = { "prettier" },
                                         go = { "gopls" },
                                         zig = { "zls" },
+                                        c = { "clang-format" }
                                 },
                         },
                 },

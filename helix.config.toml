@@ -24,8 +24,8 @@ j = {"k"= "normal_mode"}
 
 [editor.indent-guides]
 render = true
-character = "|"
-# character = "⸽" # Some characters that work well: "▏", "┆", "┊", "⸽"
+# character = "|"
+character = "⸽" # Some characters that work well: "▏", "┆", "┊", "⸽"
 skip-levels = 1
 
 [editor.smart-tab]

@@ -18,8 +18,8 @@ set $right l
 # set $term kitty
 set $term alacritty
 # Your preferred application launcher
-set $menu wmenu-run
-# set $menu rofi -show drun
+# set $menu wmenu-run
+set $menu rofi -show drun
 
 exec $term
 
@@ -40,11 +40,11 @@ output * bg /home/juan/Downloads/anime-girl-girly-1920x1080-9792-4052954925.jpg 
 ### Idle configuration
 #
 # Example configuration:
-#
-# exec swayidle -w \
-#          timeout 300 'swaylock -f -c 000000' \
-#          timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
-#          before-sleep 'swaylock -f -c 000000'
+
+exec swayidle -w \
+         timeout 300 'swaylock -f -c 000000' \
+         timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
+         before-sleep 'swaylock -f -c 000000'
 #
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
@@ -146,6 +146,9 @@ output * bg /home/juan/Downloads/anime-girl-girly-1920x1080-9792-4052954925.jpg 
     bindsym $mod+Shift+0 move container to workspace number 10
     # Note: workspaces can have any name you want, not just numbers.
     # We just use 1-10 as the default.
+
+    bindgesture swipe:right workspace prev
+    bindgesture swipe:left  workspace next
 #
 # Layout stuff:
 #
@@ -156,7 +159,7 @@ output * bg /home/juan/Downloads/anime-girl-girly-1920x1080-9792-4052954925.jpg 
     bindsym $mod+v splitv
 
     # Switch the current container between different layout styles
-    bindsym $mod+s layout stacking
+    # bindsym $mod+s layout stacking
     bindsym $mod+w layout tabbed
     bindsym $mod+e layout toggle split
 
@@ -197,10 +200,10 @@ mode "resize" {
     bindsym $right resize grow width 10px
 
     # Ditto, with arrow keys
-    bindsym Left resize shrink width 10px
+    bindsym Left resize grow width 10px
     bindsym Down resize grow height 10px
     bindsym Up resize shrink height 10px
-    bindsym Right resize grow width 10px
+    bindsym Right resize shrink width 10px
 
     # Return to default mode
     bindsym Return mode "default"

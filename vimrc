@@ -1,5 +1,5 @@
 " Leader key
-let mapleader = " "
+let mapleader = ' '
 
 " Basic settings
 set nocompatible
@@ -97,7 +97,7 @@ Plug 'tpope/vim-commentary'
 
 call plug#end()
 
-set scrolloff=10
+set scrolloff=5
 set signcolumn=yes
 
 " ---------------------------
