@@ -37,7 +37,11 @@ parse_git_branch() {
     git rev-parse --abbrev-ref HEAD 2>/dev/null | sed 's/.*/ (\x1b[32m&\x1b[0m)/'
  }
 
+parse_mercurial_branch(){
+        hg branch 2>/dev/null | sed 's/.*/ (\x1b[32m&\x1b[0m)/'
+}
+
  # Custom PS1 prompt
- export PS1="(\h) (\u) (\w)\$(parse_git_branch) (\t)\n** "
+ export PS1="(\h) (\u) (\w)\$(parse_git_branch) \$(parse_mercurial_branch) (\t)\n** "
 
 . "$HOME/.cargo/env"
