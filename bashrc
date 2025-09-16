@@ -41,3 +41,7 @@ parse_git_branch() {
  export PS1="(\h) (\u) (\w)\$(parse_git_branch) (\t) (\$(batt))\n** "
 
 . "$HOME/.cargo/env"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
