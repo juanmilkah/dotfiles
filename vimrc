@@ -16,7 +16,7 @@ set showcmd
 set laststatus=2
 set noshowmatch
 
-set textwidth=80
+set textwidth=100
 set cc=+1
 set formatoptions+=t   " auto-wrap text when typing (textwidth)
 set wrap               " visual wrapping for long lines
@@ -146,3 +146,16 @@ nnoremap <leader>ff :LspDocumentFormatSync<CR>
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+
+function! LspFormatIfAvailable() abort
+  if &modifiable == 0 || expand('%') == ''
+    return
+  endif
+  " Run the synchronous formatter (safe to call even if no formatter; silent avoids messages)
+  silent! LspDocumentFormatSync
+endfunction
+
+augroup AutoLspFormatOnSave
+  autocmd!
+  autocmd BufWritePre * nested call LspFormatIfAvailable()
+augroup END

@@ -18,6 +18,7 @@ alias c='clear'
 alias ls='ls --color --group-directories-first'
 alias ll='ls -lh'
 alias grep='grep --color=auto --ignore-case'
+alias ..='cd ../'
 
 alias g='git'
 alias gs='git status'
@@ -38,7 +39,7 @@ parse_git_branch() {
  }
 
  # Custom PS1 prompt
- export PS1="(\h) (\u) (\w)\$(parse_git_branch) (\t) (\$(batt))\n** "
+ export PS1="(\h) (\u) (\w)\$(parse_git_branch) (\$(batt))\n** "
 
 . "$HOME/.cargo/env"
 
