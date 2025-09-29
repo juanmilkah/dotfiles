@@ -92,7 +92,7 @@ require("lazy").setup({
                         },
                 },
 
-                -- { "wakatime/vim-wakatime", lazy = false },
+                { "wakatime/vim-wakatime", lazy = false },
 
                 {
                         "nvim-tree/nvim-tree.lua",

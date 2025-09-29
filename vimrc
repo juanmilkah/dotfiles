@@ -107,7 +107,27 @@ set background=dark
 if has('termguicolors')
   set termguicolors
 endif
-colorscheme gruber
+colorscheme GruberDarker
+
+" Disable error highlighting
+highlight! link LspErrorText Normal
+highlight! link LspErrorLine Normal
+highlight! link LspWarningText Normal
+highlight! link LspWarningLine Normal
+highlight! link LspInformationText Normal
+highlight! link LspInformationLine Normal
+highlight! link LspHintText Normal
+highlight! link LspHintLine Normal
+
+" Clear error sign column colors
+highlight! LspErrorHighlight guifg=NONE guibg=NONE gui=NONE ctermfg=NONE ctermbg=NONE cterm=NONE
+highlight! LspWarningHighlight guifg=NONE guibg=NONE gui=NONE ctermfg=NONE ctermbg=NONE cterm=NONE
+highlight! LspInformationHighlight guifg=NONE guibg=NONE gui=NONE ctermfg=NONE ctermbg=NONE cterm=NONE
+highlight! LspHintHighlight guifg=NONE guibg=NONE gui=NONE ctermfg=NONE ctermbg=NONE cterm=NONE
+
+" Keep error signs but make them subtle (optional)
+highlight! LspErrorText guifg=#555555 ctermfg=240
+highlight! LspWarningText guifg=#555555 ctermfg=240
 
 " Make the sign column black
 if has("termguicolors")
@@ -159,3 +179,14 @@ augroup AutoLspFormatOnSave
   autocmd!
   autocmd BufWritePre * nested call LspFormatIfAvailable()
 augroup END
+
+" Use Vim's built-in numbered menu
+let g:lsp_code_action_ui = 'float'
+
+function! LspCodeActionPrompt() abort
+    let l:diagnostics = lsp#get_buffer_diagnostics()
+    call lsp#ui#vim#code_action()
+endfunction
+
+" Better: Let vim-lsp handle it but configure the UI
+let g:lsp_diagnostics_float_cursor = 1
