@@ -14,7 +14,7 @@ vim.o.shiftwidth = 8
 vim.o.softtabstop = 8
 vim.o.smartcase = true
 vim.o.signcolumn = "yes"
-vim.o.updatetime = 100
+vim.o.updatetime = 250
 vim.o.timeoutlen = 300
 vim.o.splitright = true
 vim.o.splitbelow = true
@@ -28,7 +28,7 @@ vim.opt.colorcolumn = "80,100"
 -- Speed optimizations
 vim.o.lazyredraw = true
 vim.o.ttyfast = true
-vim.o.synmaxcol = 300
+vim.o.synmaxcol = 200
 
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 vim.keymap.set("n", "o", "o<Esc>")
@@ -88,7 +88,9 @@ require("lazy").setup({
                                         topdelete = { text = "‾" },
                                         changedelete = { text = "~" },
                                 },
-                                update_debounce = 50,
+                                update_debounce = 100,
+                                attach_to_untracked = false,
+                                sign_priority = 6,
                         },
                 },
 
@@ -307,11 +309,11 @@ require("lazy").setup({
                                 sources = {
                                         default = { "lsp", "path", "snippets" },
                                         providers = {
-                                                lsp = { timeout_ms = 500 }
+                                                lsp = { timeout_ms = 300 }
                                         }
                                 },
                                 completion = {
-                                        documentation = { auto_show = true, auto_show_delay_ms = 200 },
+                                        documentation = { auto_show = true, auto_show_delay_ms = 100 },
                                         menu = { draw = { treesitter = { "lsp" } } }
                                 },
                                 signature = { enabled = true },
@@ -322,8 +324,18 @@ require("lazy").setup({
                         "https://codeberg.org/ericrulec/gruber-darker.nvim",
                         lazy = false,
                         priority = 1000,
+                        -- config = function()
+                        --         vim.cmd.colorscheme("gruber-darker")
+                        -- end,
+                },
+
+                {
+                        "https://github.com/santos-gabriel-dario/darcula-solid.nvim",
+                        dependencies = {
+                                "https://github.com/rktjmp/lush.nvim",
+                        },
                         config = function()
-                                vim.cmd.colorscheme("gruber-darker")
+                                vim.cmd.colorscheme("darcula-solid")
                         end,
                 },
 
@@ -345,7 +357,7 @@ require("lazy").setup({
                         build = ":TSUpdate",
                         main = "nvim-treesitter.configs",
                         opts = {
-                                ensure_installed = { "lua", "rust", "json", "c" },
+                                ensure_installed = { "lua", "rust", "c" },
                                 auto_install = true,
                                 highlight = {
                                         enable = true,
@@ -357,7 +369,7 @@ require("lazy").setup({
                                                 end
                                         end,
                                 },
-                                indent = { enable = true },
+                                indent = { enable = false },
                         },
                 },
         },

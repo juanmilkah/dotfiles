@@ -95,9 +95,11 @@ Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-commentary'
 
+Plug 'wakatime/vim-wakatime'
+
 call plug#end()
 
-set scrolloff=5
+" set scrolloff=5
 set signcolumn=yes
 
 " ---------------------------
@@ -145,7 +147,7 @@ highlight Comment guifg=#FF8C00 ctermfg=208
 set statusline=%f\ %m%r%h%w\ [%{FugitiveHead()}]%=%l:%c\ %P
 
 " FZF keybindings
-nnoremap <leader>; :GFiles --cached --others --exclude-standard<CR>
+nnoremap <leader>f :GFiles --cached --others --exclude-standard<CR>
 nnoremap <leader>fg :Rg<CR>
 nnoremap <leader>/ :BLines<CR>
 
