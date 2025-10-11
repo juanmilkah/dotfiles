@@ -234,6 +234,7 @@ require("lazy").setup({
                                                 },
                                                 path = "home/juan/.lua_ls",
                                         },
+                                        clangd = {},
                                         -- zls = {
                                         --         path = "/home/juan/.zls",
                                         -- }
@@ -272,6 +273,7 @@ require("lazy").setup({
                                                                         buildScripts = { enable = true },
                                                                 },
                                                                 procMacro = { enable = true },
+                                                                cachePriming = { enable = false },
                                                                 diagnostics = {
                                                                         enable = true,
                                                                         experimental = { enable = false }

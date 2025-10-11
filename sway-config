@@ -29,7 +29,7 @@ exec gammastep -O 4000
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-# output * bg /home/juan/Downloads/anime-girl-girly-1920x1080-9792-4052954925.jpg fill
+output * bg /home/juan/Downloads/chinatown-1-67732-1024x576-MM-80.webp fill
 #
 # Example configuration:
 #

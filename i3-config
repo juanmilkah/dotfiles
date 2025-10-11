@@ -13,7 +13,7 @@ exec xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Tapping Enabled" 1
 
 default_border none
 
-set $MainMod Mod1
+set $MainMod Mod4
 
 set $terminal ghostty
 exec $terminal
@@ -214,7 +214,7 @@ bindsym $MainMod+r mode "resize"
 # finds out, if available)
 bar {
         status_command i3status
-        # mode hide
+        mode hide
 }
 
 #######################################################################
