@@ -15,6 +15,17 @@ enable_semantic_tokens = true
 [language-server.rust-analyzer.config]
 check.command = "clippy"
 
+[language.debugger]
+name = "lldb"
+transport = "stdio"
+command = "lldb"
+
+[[language.debugger.templates]]
+name = "binary"
+request = "launch"
+completion = [ { name = "binary", completion = "filename" } ]
+args = { program = "{0}", runInTerminal = true }
+
 [language-server.rust-analyzer.cargo]
 features = "all"
 

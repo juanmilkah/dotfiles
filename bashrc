@@ -26,7 +26,7 @@ alias gs='git status'
 alias ca='cargo'
 alias tm='tmux-sessionizer'
 alias open='handlr open'
-alias hx='helix'
+alias vim='helix'
 
 alias install='sudo-rs pacman -S --needed'
 alias update='sudo-rs pacman -Syu'

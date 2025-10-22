@@ -24,9 +24,9 @@ set linebreak          " break at word boundaries when displaying wrapped lines
 set nolist             " avoid showing tabs/ends that confuse wrapping
 
 " Indentation
-set tabstop=8
-set shiftwidth=8
-set softtabstop=8
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
 set expandtab
 set breakindent
 set autoindent
@@ -96,6 +96,8 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-commentary'
 
 Plug 'wakatime/vim-wakatime'
+Plug 'doums/darcula'
+Plug 'k4yt3x/ayu-vim-darker' 
 
 call plug#end()
 
@@ -109,8 +111,13 @@ set background=dark
 if has('termguicolors')
   set termguicolors
 endif
-colorscheme GruberDarker
+" colorscheme GruberDarker
+"colorscheme darcula
 
+"...
+"let ayucolor="dark"   " for dark version of theme
+let ayucolor="darker" " for darker version of theme
+colorscheme ayu
 " Disable error highlighting
 highlight! link LspErrorText Normal
 highlight! link LspErrorLine Normal
