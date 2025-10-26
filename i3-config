@@ -15,11 +15,11 @@ default_border none
 
 set $MainMod Mod4
 
-set $terminal ghostty
+set $terminal alacritty
 exec $terminal
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:IosevkaTermMonoNerdFont 10
+font pango:UbuntuSansMonoNerdFont 10
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
