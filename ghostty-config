@@ -73,10 +73,10 @@ background = 000000
 # font-family = "MonofurNerdFontMono"
 font-family = "DaddyTimeMonoNerdFontMono"
 font-style = "Regular"
-font-size = 16
+font-size = 17
 
 window-decoration = "none"
 window-save-state = "always"
-fullscreen = true
+# fullscreen = true
 
 theme = "iTerm2 Dark Background"

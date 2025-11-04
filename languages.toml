@@ -15,38 +15,8 @@ enable_semantic_tokens = true
 [language-server.rust-analyzer.config]
 check.command = "clippy"
 
-[language.debugger]
-name = "lldb"
-transport = "stdio"
-command = "lldb"
-
-[[language.debugger.templates]]
-name = "binary"
-request = "launch"
-completion = [ { name = "binary", completion = "filename" } ]
-args = { program = "{0}", runInTerminal = true }
-
 [language-server.rust-analyzer.cargo]
 features = "all"
-
-[[language]]
-name = "typescript"
-roots = ["deno.json", "deno.jsonc", "package.json"]
-file-types = ["ts", "tsx"]
-auto-format = true
-language-servers = ["deno-lsp"]
-
-[[language]]
-name = "javascript"
-roots = ["deno.json", "deno.jsonc", "package.json"]
-file-types = ["js", "jsx"]
-auto-format = true
-language-servers = ["deno-lsp"]
-
-[language-server.deno-lsp]
-command = "deno"
-args = ["lsp"]
-config.deno.enable = true
 
 [[language]]
 name = "markdown"
@@ -73,7 +43,9 @@ scope = "source.c"
 injection-regex = "c"
 file-types = ["h", "c"]
 roots = ["CMakeLists.txt", "compile_commands.json", ".clangd"]
+formatter = { command = "clang-format" }
 auto-format = true
+indent = { tab-width = 8, unit = " "}
 language-servers = ["clangd"]
 
 [language-server.clangd]
@@ -105,14 +77,3 @@ language-servers = ["gopls"]
 [language-server.gopls]
 command = "gopls"
 enable_semantic_tokens = true
-
-[language-server.superhtml-lsp]
-command = "superhtml"
-args = ["lsp"]
-
-[[language]]
-name = "html"
-scope = "source.html"
-roots = []
-file-types = ["html"]
-language-servers = [ "superhtml-lsp" ]

@@ -86,18 +86,13 @@ Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
 " LSP & completion (minimal for Vim)
-Plug 'prabirshrestha/vim-lsp'
-Plug 'mattn/vim-lsp-settings'       " helper to auto-install servers
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'dense-analysis/ale'
 
 " Optional quality-of-life
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-commentary'
 
-Plug 'wakatime/vim-wakatime'
-Plug 'doums/darcula'
-Plug 'k4yt3x/ayu-vim-darker' 
+Plug 'flazz/vim-colorschemes'
 
 call plug#end()
 
@@ -111,13 +106,8 @@ set background=dark
 if has('termguicolors')
   set termguicolors
 endif
-" colorscheme GruberDarker
-"colorscheme darcula
-
 "...
-"let ayucolor="dark"   " for dark version of theme
-let ayucolor="darker" " for darker version of theme
-colorscheme ayu
+colorscheme gruvbox
 " Disable error highlighting
 highlight! link LspErrorText Normal
 highlight! link LspErrorLine Normal
@@ -159,17 +149,47 @@ nnoremap <leader>fg :Rg<CR>
 nnoremap <leader>/ :BLines<CR>
 
 " Mappings for vim-lsp (active when server attached)
-nmap <silent> gd <plug>(lsp-definition)
-nmap <silent> gr <plug>(lsp-references)
-nmap <silent> gi <plug>(lsp-implementation)
-nmap <silent> gt <plug>(lsp-type-definition)
-nmap <silent> gn <plug>(lsp-rename)
-nmap <silent> ga <plug>(lsp-code-action)
-nmap <silent> K  <plug>(lsp-hover)
-nmap <silent> [d  <plug>(lsp-previous-diagnostic)
-nmap <silent> ]d  <plug>(lsp-next-diagnostic)
-" Formatting the document
-nnoremap <leader>ff :LspDocumentFormatSync<CR>
+"nmap <silent> gd <plug>(lsp-definition)
+"nmap <silent> gr <plug>(lsp-references)
+"nmap <silent> gi <plug>(lsp-implementation)
+"nmap <silent> gt <plug>(lsp-type-definition)
+"nmap <silent> gn <plug>(lsp-rename)
+"nmap <silent> ga <plug>(lsp-code-action)
+"nmap <silent> K  <plug>(lsp-hover)
+"nmap <silent> [d  <plug>(lsp-previous-diagnostic)
+"nmap <silent> ]d  <plug>(lsp-next-diagnostic)
+
+let g:ale_completion_enabled = 1
+let g:ale_hover_to_preview = 1
+" Hover behavior
+let g:ale_hover_cursor = 1
+let g:ale_hover_to_preview = 0
+let g:ale_hover_to_floating_preview = 1
+let g:ale_floating_preview = 1
+let g:ale_detail_to_floating_preview = 1
+
+set completeopt=menu,menuone,preview,noinsert,noselect
+let g:ale_completion_delay = 0
+let g:ale_completion_max_suggestions = 50
+
+let g:ale_fix_on_save = 1
+
+" ALE keybindings
+nmap <silent> gd :ALEGoToDefinition<CR>
+nmap <silent> gr :ALEFindReferences<CR>
+nmap <silent> gi :ALEGoToImplementation<CR>
+nmap <silent> gt :ALEGoToTypeDefinition<CR>
+nmap <silent> K :ALEHover<CR>
+nmap <silent> gn :ALERename<CR>
+nmap <silent> ga :ALECodeAction<CR>
+nmap <silent> [e :ALEPrevious<CR>
+nmap <silent> ]e :ALENext<CR>
+nmap <silent> <leader>d :ALEDetail<CR>
+
+" Tab completion
+"inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+"inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+"inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
 
 " asyncomplete mappings (completion)
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
