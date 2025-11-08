@@ -148,17 +148,6 @@ nnoremap <leader>f :GFiles --cached --others --exclude-standard<CR>
 nnoremap <leader>fg :Rg<CR>
 nnoremap <leader>/ :BLines<CR>
 
-" Mappings for vim-lsp (active when server attached)
-"nmap <silent> gd <plug>(lsp-definition)
-"nmap <silent> gr <plug>(lsp-references)
-"nmap <silent> gi <plug>(lsp-implementation)
-"nmap <silent> gt <plug>(lsp-type-definition)
-"nmap <silent> gn <plug>(lsp-rename)
-"nmap <silent> ga <plug>(lsp-code-action)
-"nmap <silent> K  <plug>(lsp-hover)
-"nmap <silent> [d  <plug>(lsp-previous-diagnostic)
-"nmap <silent> ]d  <plug>(lsp-next-diagnostic)
-
 let g:ale_completion_enabled = 1
 let g:ale_hover_to_preview = 1
 " Hover behavior
@@ -219,3 +208,7 @@ endfunction
 
 " Better: Let vim-lsp handle it but configure the UI
 let g:lsp_diagnostics_float_cursor = 1
+
+if executable('wl-copy')
+        vnoremap <C-c> :w !wl-copy<CR><CR>
+endif

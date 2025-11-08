@@ -69,9 +69,9 @@ foreground = ffffff
 # background = 181818
 background = 000000
 
-# font-family = "IosevkaTermNerdFont"
+font-family = "IosevkaTermNerdFont"
 # font-family = "MonofurNerdFontMono"
-font-family = "DaddyTimeMonoNerdFontMono"
+# font-family = "DaddyTimeMonoNerdFontMono"
 font-style = "Regular"
 font-size = 17
 

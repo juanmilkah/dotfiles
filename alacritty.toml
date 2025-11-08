@@ -2,14 +2,14 @@
 import = ["~/.config/alacritty/themes/terminal_app.toml"]
 
 [font]
-# normal = { family = "IosevkaTermSlabNerdFont", style = "Regular" }
-# size = 17
+normal = { family = "IosevkaTermSlabNerdFont", style = "Regular" }
+size = 17
 
 # normal = { family = "UbuntuSansMonoNerdFontMono", style = "Regular" }
-# size = 16.5
+# size = 17.5
 
-normal = { family = "MonofurNerdFontMono", style = "Retina" }
-size = 20
+# normal = { family = "MonofurNerdFontMono", style = "Retina" }
+# size = 20
 
 [window]
 decorations = "None"

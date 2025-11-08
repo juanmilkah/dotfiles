@@ -33,7 +33,7 @@ name = "cpp"
 scope = "source.cpp"
 injection-regex = "cpp"
 file-types = ["cpp", "cc", "cxx", "hpp", "h", "hxx"]
-roots = ["CMakeLists.txt", "compile_commands.json", ".clangd"]
+roots = ["CMakeLists.txt", "compile_commands.json", ".clangd", ".clang_format", "_clang_format"]
 auto-format = true
 language-servers = ["clangd"]
 
@@ -42,10 +42,10 @@ name = "c"
 scope = "source.c"
 injection-regex = "c"
 file-types = ["h", "c"]
-roots = ["CMakeLists.txt", "compile_commands.json", ".clangd"]
+roots = ["CMakeLists.txt", "compile_commands.json", ".clangd", ".clang_format", "_clang_format"]
 formatter = { command = "clang-format" }
 auto-format = true
-indent = { tab-width = 8, unit = " "}
+# indent = { tab-width = 8, unit = " "}
 language-servers = ["clangd"]
 
 [language-server.clangd]

@@ -1,6 +1,6 @@
 # This is a comment
-theme = "gruber-darker"
-# theme = "ayu_evolve"
+# theme = "gruber-darker"
+theme = "ayu_evolve"
 
 [editor]
 line-number = "relative"

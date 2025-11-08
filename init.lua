@@ -53,6 +53,16 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     end,
 })
 
+-- Enable inlay hints
+vim.api.nvim_create_autocmd("LspAttach", {
+    callback = function(args)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        if client and client.server_capabilities.inlayHintProvider then
+            vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
+        end
+    end,
+})
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
     local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -116,18 +126,16 @@ require("lazy").setup({
         {
             "nvim-lualine/lualine.nvim",
             event = "VeryLazy",
-            config = function()
-                require("lualine").setup({
-                    options = { refresh = { statusline = 100 } },
-                    sections = {
-                        lualine_b = {
-                            "branch", "diff",
-                            { "diagnostics", sources = { "nvim_diagnostic" } },
-                        },
-                        lualine_c = { "filename" },
+            opts = {
+                options = { refresh = { statusline = 100 } },
+                sections = {
+                    lualine_b = {
+                        "branch", "diff",
+                        { "diagnostics", sources = { "nvim_diagnostic" } },
                     },
-                })
-            end,
+                    lualine_c = { "filename" },
+                },
+            },
         },
 
         {
@@ -147,7 +155,7 @@ require("lazy").setup({
                 local telescope = require("telescope")
                 telescope.setup({
                     defaults = {
-                        file_ignore_patterns = { "%.git/", "node_modules/", "target/" },
+                        file_ignore_patterns = { "%.git/", "target/" },
                     },
                 })
                 pcall(telescope.load_extension, "fzf")
@@ -201,14 +209,6 @@ require("lazy").setup({
 
                 local capabilities = require("blink.cmp").get_lsp_capabilities()
 
-                -- Enhanced capabilities for better performance
-                capabilities.textDocument.completion.completionItem = {
-                    snippetSupport = true,
-                    resolveSupport = {
-                        properties = { "documentation", "detail", "additionalTextEdits" }
-                    }
-                }
-
                 local servers = {
                     lua_ls = {
                         settings = {
@@ -220,12 +220,13 @@ require("lazy").setup({
                         path = "home/juan/.lua_ls",
                     },
                     clangd = {},
-                    -- zls = {
-                    --     path = "/home/juan/.zls",
-                    -- }
+                    zls = {
+                        path = "/home/juan/.zls",
+                    }
                 }
 
                 local ensure_installed = vim.tbl_keys(servers)
+
                 require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
                 require("mason-lspconfig").setup({
@@ -242,10 +243,10 @@ require("lazy").setup({
             end,
         },
 
+
         {
             "mrcjkb/rustaceanvim",
-            version = "^6",
-            lazy = false,
+            version = "^5",
             ft = { "rust" },
             config = function()
                 vim.g.rustaceanvim = {
@@ -253,21 +254,43 @@ require("lazy").setup({
                         capabilities = require("blink.cmp").get_lsp_capabilities(),
                         settings = {
                             ["rust-analyzer"] = {
-                                checkOnSave = true,
+                                check = { command = "check" },
                                 cargo = {
                                     buildScripts = { enable = true },
                                 },
                                 procMacro = { enable = true },
-                                cachePriming = { enable = false },
                                 diagnostics = {
                                     enable = true,
-                                    experimental = { enable = false }
+                                    experimental = { enable = true }
+                                },
+                                inlayHints = {
+                                    bindingModeHints = { enable = true },
+                                    chainingHints = { enable = true },
+                                    closingBraceHints = { enable = true },
+                                    closureReturnTypeHints = { enable = true },
+                                    lifetimeElisionHints = { enable = true },
+                                    parameterHints = { enable = true },
+                                    typeHints = { enable = true },
                                 },
                             },
                         },
                     },
                 }
             end,
+        },
+
+        {
+            "lukas-reineke/indent-blankline.nvim",
+            event = { "BufReadPost", "BufNewFile" },
+            main = "ibl",
+            opts = {
+                indent = {
+                    char = "│",
+                },
+                scope = {
+                    enabled = false,
+                },
+            },
         },
 
         {
@@ -321,16 +344,16 @@ require("lazy").setup({
             "logannday/gruber-darker-nvim",
             lazy = false,
             priority = 1000,
-            config = function()
-                vim.cmd([[colorscheme gruber-darker]])
-            end,
+            -- config = function()
+            --     vim.cmd([[colorscheme gruber-darker]])
+            -- end,
         },
 
         {
             "https://github.com/Shatur/neovim-ayu",
-            -- config = function()
-            --     vim.cmd.colorscheme("ayu")
-            -- end,
+            config = function()
+                vim.cmd.colorscheme("ayu")
+            end,
         },
 
         {
@@ -347,8 +370,8 @@ require("lazy").setup({
 
         {
             "brenton-leighton/multiple-cursors.nvim",
-            version = "*", -- Use the latest tagged version
-            opts = {},     -- This causes the plugin setup function to be called
+            version = "*",
+            opts = {},
             keys = {
                 { "<C-j>",         "<Cmd>MultipleCursorsAddDown<CR>",          mode = { "n", "x" },      desc = "Add cursor and move down" },
                 { "<C-k>",         "<Cmd>MultipleCursorsAddUp<CR>",            mode = { "n", "x" },      desc = "Add cursor and move up" },
@@ -394,21 +417,4 @@ require("lazy").setup({
     },
     {
         ui = { icons = vim.g.have_nerd_font and {} or {} },
-        -- performance = {
-        --     cache = { enabled = true },
-        --     reset_packpath = true,
-        --     rtp = {
-        --         disabled_plugins = {
-        --             "gzip",
-        --             "matchit",
-        --             "matchparen",
-        --             "netrwPlugin",
-        --             "tarPlugin",
-        --             "tohtml",
-        --             "tutor",
-        --             "zipPlugin",
-        --         },
-        --     },
-        -- },
-        -- checker = { enabled = false },
     })

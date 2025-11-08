@@ -20,6 +20,7 @@ alias ls='ls --color=never --group-directories-first'
 alias ll='ls -lh'
 alias grep='grep --color=auto --ignore-case'
 alias ..='cd ../'
+alias hx='helix'
 
 alias g='git'
 alias gs='git status'
@@ -33,13 +34,13 @@ alias update='sudo-rs pacman -Syu'
 alias remove='sudo-rs pacman -Rnsc'
 alias unused='sudo-rs pacman -Qtdq'
 
-# parse_git_branch() {
-#     git rev-parse --abbrev-ref HEAD 2>/dev/null | sed 's/.*/ (\x1b[32m&\x1b[0m)/'
-#  }
+parse_git_branch() {
+    git rev-parse --abbrev-ref HEAD 2>/dev/null | sed 's/.*/ (\x1b[32m&\x1b[0m)/'
+ }
 
  # Custom PS1 prompt
- # export PS1="(\h) (\u) (\w)\$(parse_git_branch)\n** "
-PS1='$(prmt --code $? "{path:cyan} {git:green} \n{ok:green}{fail:red} ")'
+ export PS1="(\h) (\u) (\w)\$(parse_git_branch)\n** "
+# PS1='$(prmt --code $? "{path:cyan} {git:green} \n{ok:green}{fail:red} ")'
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
