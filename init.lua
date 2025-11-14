@@ -254,18 +254,18 @@ require("lazy").setup({
                         capabilities = require("blink.cmp").get_lsp_capabilities(),
                         settings = {
                             ["rust-analyzer"] = {
-                                check = { command = "check" },
+                                check = { command = "clippy" },
                                 cargo = {
                                     buildScripts = { enable = true },
                                 },
                                 procMacro = { enable = true },
                                 diagnostics = {
                                     enable = true,
-                                    experimental = { enable = true }
+                                    experimental = { enable = false }
                                 },
                                 inlayHints = {
                                     bindingModeHints = { enable = true },
-                                    chainingHints = { enable = true },
+                                    chainingHints = { enable = false },
                                     closingBraceHints = { enable = true },
                                     closureReturnTypeHints = { enable = true },
                                     lifetimeElisionHints = { enable = true },

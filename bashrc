@@ -6,6 +6,8 @@ export EDITOR=nvim
 export TERM=screen-256color
 export LANG='en_US.UTF-8'
 
+export HISTCONTROL=ignoredups
+
 # Add directories to PATH
 export PATH="$PATH:$HOME/dev/dotfiles"
 export PATH="$PATH:$HOME/dev/bin"
