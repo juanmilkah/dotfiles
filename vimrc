@@ -107,7 +107,7 @@ if has('termguicolors')
   set termguicolors
 endif
 "...
-colorscheme gruvbox
+colorscheme ayu
 " Disable error highlighting
 highlight! link LspErrorText Normal
 highlight! link LspErrorLine Normal

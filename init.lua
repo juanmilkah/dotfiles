@@ -219,7 +219,10 @@ require("lazy").setup({
                         },
                         path = "home/juan/.lua_ls",
                     },
-                    clangd = {},
+                    gopls = {},
+                    clangd = {
+                        cmd = { "clang-format --fallback-style=gnu" },
+                    },
                     zls = {
                         path = "/home/juan/.zls",
                     }
@@ -303,8 +306,9 @@ require("lazy").setup({
                 formatters_by_ft = {
                     lua = { "stylua" },
                     json = { "prettier" },
-                    go = { "gopls" },
+                    go = { "gofumpt" },
                     zig = { "zls" },
+                    -- c = { "clang-format --fallback-style=gnu" },
                     c = { "clang-format" }
                 },
             },

@@ -16,8 +16,7 @@ set $down j
 set $up k
 set $right l
 # Your preferred terminal emulator
-# set $term kitty
-set $term alacritty
+set $term kitty
 # Your preferred application launcher
 # set $menu wmenu-run
 set $menu rofi -show drun
@@ -30,7 +29,7 @@ exec gammastep -O 4000
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg /home/juan/Downloads/chinatown-1-67732-1024x576-MM-80.webp fill
+output * bg /home/juan/Downloads/iTBpoXA-1946580505.jpg fill
 #
 # Example configuration:
 #
@@ -223,8 +222,9 @@ bindsym $mod+r mode "resize"
     bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
     bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
     # Special key to take a screenshot with grim
-    bindsym Print exec grim
-    bindsym $mod+Print exec grim -g "$(slurp)" ~/Pictures/screenshots/$(date +'%Y-%m-%d_%H-%M-%S.png')
+    bindsym --locked Print exec grim
+    # bindsym --locked $mod+Print exec grim -g "$(slurp)" ~/Pictures/$(date +'%Y-%m-%d_%H-%M-%S.png')
+    bindsym --locked $mod+Print exec grim -g "$(slurp)" 
 
 #
 # Status Bar:

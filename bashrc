@@ -10,6 +10,7 @@ export HISTCONTROL=ignoredups
 
 # Add directories to PATH
 export PATH="$PATH:$HOME/dev/dotfiles"
+export PATH="$PATH:$HOME/dev/cuddly"
 export PATH="$PATH:$HOME/dev/bin"
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/.zig"
@@ -30,6 +31,8 @@ alias gs='git status'
 alias ca='cargo'
 alias tm='tmux-sessionizer'
 alias open='handlr open'
+alias t='todo'
+alias tl='todo list'
 
 alias install='sudo-rs pacman -S --needed'
 alias update='sudo-rs pacman -Syu'
@@ -214,3 +217,4 @@ fi
 # To initialize zoxide, add this to your shell configuration file (usually ~/.bashrc):
 #
 # eval "$(zoxide init bash)"
+. "$HOME/.cargo/env"
