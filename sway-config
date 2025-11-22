@@ -6,6 +6,8 @@
 default_border none
 font pango:IosevkaTermNerdFont 10
 
+seat seat0 xcursor_theme Oxygen-14-Matrix-Green 32
+
 ### Variables
 #
 # Logo key. Use Mod1 for Alt.
@@ -29,7 +31,7 @@ exec gammastep -O 4000
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg /home/juan/Downloads/iTBpoXA-1946580505.jpg fill
+output * bg /home/juan/Downloads/10811-2206885872.jpg fill
 #
 # Example configuration:
 #
@@ -231,8 +233,9 @@ bindsym $mod+r mode "resize"
 #
 # Read `man 5 sway-bar` for more information about this section.
 bar {
-    position bottom
-    # mode hide
+    position top
+    mode hide
+    modifier $mod
 
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.

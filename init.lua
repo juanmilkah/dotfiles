@@ -348,16 +348,16 @@ require("lazy").setup({
             "logannday/gruber-darker-nvim",
             lazy = false,
             priority = 1000,
-            -- config = function()
-            --     vim.cmd([[colorscheme gruber-darker]])
-            -- end,
+            config = function()
+                vim.cmd([[colorscheme gruber-darker]])
+            end,
         },
 
         {
             "https://github.com/Shatur/neovim-ayu",
-            config = function()
-                vim.cmd.colorscheme("ayu")
-            end,
+            -- config = function()
+            --     vim.cmd.colorscheme("ayu")
+            -- end,
         },
 
         {

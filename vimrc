@@ -1,214 +1,168 @@
-" Leader key
-let mapleader = ' '
+let mapleader = " "
+let maplocalleader = " "
 
-" Basic settings
 set nocompatible
 set mouse=a
 set confirm
 set hidden
 set clipboard=unnamedplus
+set autoread
+set updatetime=300
+set timeoutlen=400
+set lazyredraw
+set shortmess+=c
 
-" Display
-set number
-set relativenumber
-set showmode
-set showcmd
-set laststatus=2
-set noshowmatch
-
+set number relativenumber
+set signcolumn=yes 
+set colorcolumn=+1
 set textwidth=100
-set cc=+1
-set formatoptions+=t   " auto-wrap text when typing (textwidth)
-set wrap               " visual wrapping for long lines
-set linebreak          " break at word boundaries when displaying wrapped lines
-set nolist             " avoid showing tabs/ends that confuse wrapping
+set formatoptions=tcroqjnl " Better auto-formatting
+set wrap linebreak
+set listchars=tab:→\ ,trail:·,nbsp:␣
+set nolist
+set scrolloff=5
+set sidescrolloff=10
 
-" Indentation
-set tabstop=4
+set expandtab
 set shiftwidth=4
 set softtabstop=4
-set expandtab
-set breakindent
-set autoindent
+set tabstop=4
 set smartindent
+set breakindent
 
-" Search
 set incsearch
-set ignorecase
-set smartcase
-set nohlsearch
-
-" Files and backups
-set nobackup
-set nowritebackup
-set autoread
-filetype plugin indent on
-syntax on
-set dir=~/dev/tmp
-
-" Performance
-set updatetime=100
-set timeoutlen=300
-set lazyredraw
-
-" Splits
-set splitright
-set splitbelow
-
-" Key mappings (small, useful defaults)
+set ignorecase smartcase
+set hlsearch
 nnoremap <Esc> :nohlsearch<CR>
+
+" --------------------- Splits & Windows ---------------------
+set splitbelow splitright
+set winminheight=1
+set equalalways eadirection=both
+
+" --------------------- Key Remappings ---------------------
+nnoremap Y y$
 nnoremap o o<Esc>
 nnoremap O O<Esc>
+nnoremap n nzzzv
+nnoremap N Nzzzv
+nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
+nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
 inoremap jk <Esc>
-noremap Y y$
-noremap n nzz
-noremap N Nzz
-noremap < <gv
-noremap > >gv
+inoremap <C-c> <Esc>
 
-" ---------------------------
-" Plugins via vim-plug
-" ---------------------------
+" Visual shifting (keep selection)
+vnoremap < <gv
+vnoremap > >gv
+
+" --------------------- Plugins (vim-plug) ---------------------
 if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  silent execute "!curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
 call plug#begin('~/.vim/plugged')
 
-" Theme
-" Finder (fzf requires ripgrep for best results)
+Plug 'https://github.com/m6vrm/gruber.vim'        
+Plug 'doums/darcula'                
+
+" Core UX
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-
-" Git
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
-
-" LSP & completion (minimal for Vim)
-Plug 'dense-analysis/ale'
-
-" Optional quality-of-life
-Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-commentary'
+Plug 'jiangmiao/auto-pairs'
+Plug 'machakann/vim-highlightedyank'
 
-Plug 'flazz/vim-colorschemes'
+" LSP & Completion (modern lightweight stack)
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'       " Auto-install language servers
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
 call plug#end()
 
-" set scrolloff=5
-set signcolumn=yes
-
-" ---------------------------
-" Colorscheme
-" ---------------------------
+" --------------------- Colors & Theme ---------------------
 set background=dark
-if has('termguicolors')
-  set termguicolors
-endif
-"...
-colorscheme ayu
-" Disable error highlighting
-highlight! link LspErrorText Normal
-highlight! link LspErrorLine Normal
-highlight! link LspWarningText Normal
-highlight! link LspWarningLine Normal
-highlight! link LspInformationText Normal
-highlight! link LspInformationLine Normal
-highlight! link LspHintText Normal
-highlight! link LspHintLine Normal
+set termguicolors
 
-" Clear error sign column colors
-highlight! LspErrorHighlight guifg=NONE guibg=NONE gui=NONE ctermfg=NONE ctermbg=NONE cterm=NONE
-highlight! LspWarningHighlight guifg=NONE guibg=NONE gui=NONE ctermfg=NONE ctermbg=NONE cterm=NONE
-highlight! LspInformationHighlight guifg=NONE guibg=NONE gui=NONE ctermfg=NONE ctermbg=NONE cterm=NONE
-highlight! LspHintHighlight guifg=NONE guibg=NONE gui=NONE ctermfg=NONE ctermbg=NONE cterm=NONE
+colorscheme gruber      
+" colorscheme darcula  
 
-" Keep error signs but make them subtle (optional)
-highlight! LspErrorText guifg=#555555 ctermfg=240
-highlight! LspWarningText guifg=#555555 ctermfg=240
-
-" Make the sign column black
-if has("termguicolors")
-  hi SignColumn guibg=#000000 guifg=NONE
-else
-  hi SignColumn ctermbg=0 ctermfg=NONE
-endif
-
-" Small highlight tweaks (optional)
 highlight LineNr guifg=#FF8C00 ctermfg=208
 highlight CursorLineNr guifg=#FFA500 ctermfg=214
 highlight Comment guifg=#FF8C00 ctermfg=208
 
-" Statusline with git branch
-set statusline=%f\ %m%r%h%w\ [%{FugitiveHead()}]%=%l:%c\ %P
+" Subtle sign column that matches background but shows signs
+highlight SignColumn       guibg=#1c1c1c
+highlight GitGutterAdd     guifg=#00ff00 guibg=#1c1c1c
+highlight GitGutterChange  guifg=#ffff00 guibg=#1c1c1c
+highlight GitGutterDelete  guifg=#ff2222 guibg=#1c1c1c
 
-" FZF keybindings
-nnoremap <leader>f :GFiles --cached --others --exclude-standard<CR>
-nnoremap <leader>fg :Rg<CR>
-nnoremap <leader>/ :BLines<CR>
+" LSP diagnostic signs (subtle but visible)
+highlight LspErrorText     guifg=#ff5555
+highlight LspWarningText   guifg=#ffaa00
+highlight LspHintText      guifg=#00ffff
+highlight LspInfoText      guifg=#55aaff
 
-let g:ale_completion_enabled = 1
-let g:ale_hover_to_preview = 1
-" Hover behavior
-let g:ale_hover_cursor = 1
-let g:ale_hover_to_preview = 0
-let g:ale_hover_to_floating_preview = 1
-let g:ale_floating_preview = 1
-let g:ale_detail_to_floating_preview = 1
+" --------------------- vim-lsp Configuration ---------------------
+let g:lsp_settings_filetype_go = 'gopls'
+let g:lsp_settings_filetype_rust = 'rust-analyzer'
+let g:lsp_settings_filetype_cpp = 'clangd'
+let g:lsp_diagnostics_virtual_text_enabled = 1
+let g:lsp_hover_ui = 'float'
+let g:lsp_diagnostics_float_cursor = 1
+let g:lsp_document_code_action_signs_enabled = 1
+let g:lsp_code_action_ui = 'float'
+let g:lsp_diagnostics_float_cursor = 1
 
-set completeopt=menu,menuone,preview,noinsert,noselect
-let g:ale_completion_delay = 0
-let g:ale_completion_max_suggestions = 50
+highlight LspDiagnosticsVirtualTextError   guifg=#ff6c6b guibg=#3f1f22
+highlight LspDiagnosticsVirtualTextWarning guifg=#ffb86c guibg=#3f2f1f
+highlight LspDiagnosticsVirtualTextInformation guifg=#82aaff guibg=#1f2f3f
+highlight LspDiagnosticsVirtualTextHint   guifg=#4fd6be guibg=#1f3f3a
 
-let g:ale_fix_on_save = 1
+" Auto-format on save (where formatter exists)
+function! s:on_lsp_buffer_enabled() abort
+    setlocal omnifunc=lsp#complete
+    setlocal completeopt=menu,menuone,noinsert,noselect
 
-" ALE keybindings
-nmap <silent> gd :ALEGoToDefinition<CR>
-nmap <silent> gr :ALEFindReferences<CR>
-nmap <silent> gi :ALEGoToImplementation<CR>
-nmap <silent> gt :ALEGoToTypeDefinition<CR>
-nmap <silent> K :ALEHover<CR>
-nmap <silent> gn :ALERename<CR>
-nmap <silent> ga :ALECodeAction<CR>
-nmap <silent> [e :ALEPrevious<CR>
-nmap <silent> ]e :ALENext<CR>
-nmap <silent> <leader>d :ALEDetail<CR>
+    nmap <buffer> gd <plug>(lsp-definition)
+    nmap <buffer> gD <plug>(lsp-declaration)
+    nmap <buffer> gr <plug>(lsp-references)
+    nmap <buffer> gi <plug>(lsp-implementation)
+    nmap <buffer> gt <plug>(lsp-type-definition)
+    nmap <buffer> gn <plug>(lsp-rename)
+    nmap <buffer> ga <plug>(lsp-code-action)
+    nmap <buffer> K  <plug>(lsp-hover)
+    nmap <buffer> [e <plug>(lsp-previous-diagnostic)
+    nmap <buffer> ]e <plug>(lsp-next-diagnostic)
 
-" Tab completion
-"inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-"inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-"inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
+    " Auto-format on save
+    autocmd BufWritePre <buffer> LspDocumentFormatSync --servers ALL
+endfunction
 
-" asyncomplete mappings (completion)
+augroup lsp_install
+    au!
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
+
+" --------------------- Completion (asyncomplete) ---------------------
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
 
-function! LspFormatIfAvailable() abort
-  if &modifiable == 0 || expand('%') == ''
-    return
-  endif
-  " Run the synchronous formatter (safe to call even if no formatter; silent avoids messages)
-  silent! LspDocumentFormatSync
-endfunction
+" --------------------- FZF Keybindings ---------------------
+nnoremap <leader>f  :GFiles<CR>
+nnoremap <leader>F  :Files<CR>
+nnoremap <leader>b  :Buffers<CR>
+nnoremap <leader>rg :Rg<Space>
+nnoremap <leader>/  :BLines<CR>
+nnoremap <leader>H  :History<CR>
 
-augroup AutoLspFormatOnSave
-  autocmd!
-  autocmd BufWritePre * nested call LspFormatIfAvailable()
-augroup END
+set statusline=%f\ %m%r%h%w\ [%{FugitiveHead()}]%=%l:%c\ %P
 
-" Use Vim's built-in numbered menu
-let g:lsp_code_action_ui = 'float'
-
-function! LspCodeActionPrompt() abort
-    let l:diagnostics = lsp#get_buffer_diagnostics()
-    call lsp#ui#vim#code_action()
-endfunction
-
-" Better: Let vim-lsp handle it but configure the UI
-let g:lsp_diagnostics_float_cursor = 1
-
+" --------------------- Wayland clipboard (if available) ---------------------
 if executable('wl-copy')
-        vnoremap <C-c> :w !wl-copy<CR><CR>
+    vnoremap <C-c> :w !wl-copy<CR><CR>
 endif
