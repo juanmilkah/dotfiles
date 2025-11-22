@@ -23,6 +23,7 @@ alias ls='ls --color=never --group-directories-first'
 alias ll='ls -lh'
 alias grep='grep --color=auto --ignore-case'
 alias ..='cd ../'
+alias cd='z'
 alias vim='nvim'
 
 alias g='git'
