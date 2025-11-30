@@ -14,8 +14,8 @@ set shortmess+=c
 
 set number relativenumber
 set signcolumn=yes 
-set colorcolumn=+1
-set textwidth=100
+" set colorcolumn=+1
+set textwidth=80
 set formatoptions=tcroqjnl " Better auto-formatting
 set wrap linebreak
 set listchars=tab:→\ ,trail:·,nbsp:␣
@@ -63,8 +63,8 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'https://github.com/m6vrm/gruber.vim'        
 Plug 'doums/darcula'                
+Plug 'https://github.com/morhetz/gruvbox'
 
 " Core UX
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -84,21 +84,23 @@ Plug 'prabirshrestha/asyncomplete-lsp.vim'
 call plug#end()
 
 " --------------------- Colors & Theme ---------------------
-set background=dark
-set termguicolors
+" set background=dark
+" set termguicolors
 
-colorscheme gruber      
 " colorscheme darcula  
+" REad the Wiki at https://github.com/morhetz/gruvbox/wiki/Configuration#ggruvbox_contrast_dark
+let g:gruvbox_contrast_dark='hard'
+colorscheme gruvbox
 
 highlight LineNr guifg=#FF8C00 ctermfg=208
 highlight CursorLineNr guifg=#FFA500 ctermfg=214
 highlight Comment guifg=#FF8C00 ctermfg=208
-
+"
 " Subtle sign column that matches background but shows signs
 highlight SignColumn       guibg=#1c1c1c
-highlight GitGutterAdd     guifg=#00ff00 guibg=#1c1c1c
-highlight GitGutterChange  guifg=#ffff00 guibg=#1c1c1c
-highlight GitGutterDelete  guifg=#ff2222 guibg=#1c1c1c
+" highlight GitGutterAdd     guifg=#00ff00 guibg=#1c1c1c
+" highlight GitGutterChange  guifg=#ffff00 guibg=#1c1c1c
+" highlight GitGutterDelete  guifg=#ff2222 guibg=#1c1c1c
 
 " LSP diagnostic signs (subtle but visible)
 highlight LspErrorText     guifg=#ff5555

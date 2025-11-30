@@ -31,7 +31,7 @@ exec gammastep -O 4000
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg /home/juan/Downloads/10811-2206885872.jpg fill
+output * bg /home/juan/Downloads/black-hole-hd_bWxnaG2UmZqaraWkpJRmbmdlrWZnZWU-469926459.jpg fill
 #
 # Example configuration:
 #

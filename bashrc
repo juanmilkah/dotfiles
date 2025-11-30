@@ -9,9 +9,9 @@ export LANG='en_US.UTF-8'
 export HISTCONTROL=ignoredups
 
 # Add directories to PATH
-export PATH="$PATH:$HOME/dev/dotfiles"
-export PATH="$PATH:$HOME/dev/cuddly"
-export PATH="$PATH:$HOME/dev/bin"
+export PATH="$PATH:$HOME/dotfiles"
+export PATH="$PATH:$HOME/cuddly"
+export PATH="$PATH:$HOME/bin"
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/.zig"
 export PATH="$PATH:$HOME/.zls"
@@ -24,7 +24,7 @@ alias ll='ls -lh'
 alias grep='grep --color=auto --ignore-case'
 alias ..='cd ../'
 alias cd='z'
-alias vim='nvim'
+# alias vim='nvim'
 alias hx='helix'
 
 alias g='git'

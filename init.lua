@@ -220,9 +220,7 @@ require("lazy").setup({
                         path = "home/juan/.lua_ls",
                     },
                     gopls = {},
-                    clangd = {
-                        cmd = { "clang-format --fallback-style=gnu" },
-                    },
+                    clangd = {},
                     zls = {
                         path = "/home/juan/.zls",
                     }
