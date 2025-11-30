@@ -25,6 +25,7 @@ alias grep='grep --color=auto --ignore-case'
 alias ..='cd ../'
 alias cd='z'
 alias vim='nvim'
+alias hx='helix'
 
 alias g='git'
 alias gs='git status'

@@ -305,10 +305,10 @@ require("lazy").setup({
                 format_on_save = { timeout_ms = 1000, lsp_format = "fallback" },
                 formatters_by_ft = {
                     lua = { "stylua" },
+                    js = { "prettier" },
                     json = { "prettier" },
                     go = { "gofumpt" },
                     zig = { "zls" },
-                    -- c = { "clang-format --fallback-style=gnu" },
                     c = { "clang-format" }
                 },
             },
