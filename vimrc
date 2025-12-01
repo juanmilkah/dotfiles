@@ -63,8 +63,7 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'doums/darcula'                
-Plug 'https://github.com/morhetz/gruvbox'
+Plug 'https://github.com/drsooch/gruber-darker-vim'
 
 " Core UX
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -87,10 +86,7 @@ call plug#end()
 " set background=dark
 " set termguicolors
 
-" colorscheme darcula  
-" REad the Wiki at https://github.com/morhetz/gruvbox/wiki/Configuration#ggruvbox_contrast_dark
-let g:gruvbox_contrast_dark='hard'
-colorscheme gruvbox
+colorscheme GruberDarker
 
 highlight LineNr guifg=#FF8C00 ctermfg=208
 highlight CursorLineNr guifg=#FFA500 ctermfg=214
@@ -155,8 +151,8 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
 
 " --------------------- FZF Keybindings ---------------------
-nnoremap <leader>f  :GFiles<CR>
-nnoremap <leader>F  :Files<CR>
+nnoremap <leader>g  :GFiles<CR>
+nnoremap <leader>f  :Files<CR>
 nnoremap <leader>b  :Buffers<CR>
 nnoremap <leader>rg :Rg<Space>
 nnoremap <leader>/  :BLines<CR>
