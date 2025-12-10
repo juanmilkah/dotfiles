@@ -2,15 +2,15 @@
 import = ["~/.config/alacritty/themes/terminal_app.toml"]
 
 [font]
-normal = { family = "IosevkaTermSlabNerdFont", style = "Regular" }
+normal = { family = "IosevkaTermNerdFont", style = "Light" }
 size = 17
 
-# normal = { family = "UbuntuSansMonoNerdFontMono", style = "Regular" }
-# size = 17.5
-
-# normal = { family = "MonofurNerdFontMono", style = "Retina" }
-# size = 20
+# normal = { family = "UbuntuSansMonoNerdFontMono", style = "Retina" }
+# size = 16.5
 
 [window]
 decorations = "None"
 startup_mode = "Maximized"
+
+# [colors]
+# primary = { foreground = "#00ff0b" }

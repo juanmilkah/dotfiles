@@ -5,12 +5,12 @@ set nocompatible
 set mouse=a
 set confirm
 set hidden
-set clipboard=unnamedplus
-set autoread
+" set clipboard=unnamedplus
+" set autoread
 set updatetime=300
 set timeoutlen=400
 set lazyredraw
-set shortmess+=c
+" set shortmess+=c
 
 set number relativenumber
 set signcolumn=yes 
@@ -68,10 +68,9 @@ Plug 'https://github.com/drsooch/gruber-darker-vim'
 " Core UX
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-commentary'
-Plug 'jiangmiao/auto-pairs'
+Plug 'https://github.com/LunarWatcher/auto-pairs'
 Plug 'machakann/vim-highlightedyank'
 
 " LSP & Completion (modern lightweight stack)
@@ -109,6 +108,7 @@ let g:lsp_settings_filetype_go = 'gopls'
 let g:lsp_settings_filetype_rust = 'rust-analyzer'
 let g:lsp_settings_filetype_cpp = 'clangd'
 let g:lsp_diagnostics_virtual_text_enabled = 1
+let g:lsp_diagnostics_virtual_text_align = "right"
 let g:lsp_hover_ui = 'float'
 let g:lsp_diagnostics_float_cursor = 1
 let g:lsp_document_code_action_signs_enabled = 1
@@ -158,7 +158,7 @@ nnoremap <leader>rg :Rg<Space>
 nnoremap <leader>/  :BLines<CR>
 nnoremap <leader>H  :History<CR>
 
-set statusline=%f\ %m%r%h%w\ [%{FugitiveHead()}]%=%l:%c\ %P
+set statusline=%f\ %m%r%h%w\ %=%l:%c\ %P
 
 " --------------------- Wayland clipboard (if available) ---------------------
 if executable('wl-copy')
